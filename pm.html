@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <link rel="icon" href="data:,"> <!-- NOTE: Remove it for valid icon. -->
+        <title>Wireless Calculator</title>
+
+<style>
+
+label {
+    font-weight: bold;
+}
+
+#base {
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid silver;
+}
+.box1 {
+    width: 300px;
+    border: 1px solid silver;
+    margin: 4px;
+}
+.box2 {
+    width: 280px;
+    border: 1px solid silver;
+    margin: 4px;
+}
+
+.canvas {
+    height: 250px;
+}
+</style>
+
+    </head>
+
+    <body>
+
+        <div id="base" oninput="ev_change_rf_params()">
+
+            <div class="box1">
+                <div class="box2">
+                    <label for="freq">Frequency</label>
+                    <input id="freq" type="text">MHz
+                </div>
+                <!--
+                <div>
+                    <label for="tx_prod_dev">Product Name</label>
+                    <select id="tx_prod_dev">
+                        <option value="txp_unknown">Unknown</option>
+                        <option value="txp_iw9165d">IW9165D</option>
+                    </div>
+                </div>
+                -->
+                <div class="box2">
+                    <label for="box_tx_power">Tx Power</label>
+                    <!-- XXX according to tx_prod_dev -->
+                    <div id="box_tx_power">
+                        <div>
+                            <input id="tx_power_dbm" type="text" onchange="ev_dbm_to_mw(this)">dBm
+                        </div>
+                        <div>
+                            <input id="tx_power_mw" type="text" onchange="ev_mw_to_dbm(this)">mW
+                        </div>
+                    </div>
+                </div>
+                <div class="box2">
+                    <!-- XXX according to tx_prod_ant -->
+                    <label for="box_tx_antenna">Tx Antenna</label>
+                    <div id="box_tx_antenna">
+                        <div>
+                            <label for="tx_ant_gain">Gain</label>
+                            <input id="tx_ant_gain" type="text">dBi
+                        </div>
+                        <div>
+                            <label for="tx_cable_loss">Cable Loss</label>
+                            <input id="tx_cable_loss" type="text">dB
+                        </div>
+                        <div>
+                            <label for="tx_misc_loss">Misc. Loss</label>
+                            <input id="tx_misc_loss" type="text">dB
+                        </div>
+                        <div>
+                            <label for="tx_ant_height">Height</label>
+                            <input id="tx_ant_height" type="text">m
+                        </div>
+                    </div>
+                </div>
+                <div class="box2">
+                    <label for="box_path_loss_model">Path Loss Model</label>
+                    <div id="box_path_loss_model">
+                        <div>
+                            <label for="ple_freespace">Free space</label>
+                            <input id="ple_freespace" type="checkbox" checked>
+                        </div>
+                        <div>
+                            <label for="ple_hata_open">Hata Open</label>
+                            <input id="ple_hata_open" type="checkbox" checked>
+                        </div>
+                        <div>
+                            <label for="ple_hata_suburb">Hata Suburb</label>
+                            <input id="ple_hata_suburb" type="checkbox" checked>
+                        </div>
+                        <div>
+                            <label for="ple_hata_urban">Hata Urban Small/Medium</label>
+                            <input id="ple_hata_urban" type="checkbox" checked>
+                        </div>
+                        <div>
+                            <label for="ple_hata_urban_large">Hata Large City</label>
+                            <input id="ple_hata_urban_large" type="checkbox" checked>
+                        </div>
+                        <div>
+                            <label for="ple_fixed">Fixed PL</label>
+                            <input id="ple_fixed" type="checkbox">
+                        </div>
+                    </div>
+                    <div>
+                        <!-- XXX enable it if "your estimation" is selected. -->
+                        <label for="ple_fixed_value">Fixed PL</label>
+                        <input id="ple_fixed_value" type="text" value="20">dB
+                    </div>
+                </div>
+                <div class="box2">
+                    <label for="misc_loss">Misc. Loss</label>
+                    <input id="misc_loss" type="text">dB
+                </div>
+                <div class="box2">
+                    <label for="box_rx_antenna">Rx Antenna</label>
+                    <div id="box_rx_antenna">
+                        <div>
+                            <label for="rx_ant_gain">Gain</label>
+                            <input id="rx_ant_gain" type="text">dBi
+                        </div>
+                        <div>
+                            <label for="rx_cable_loss">Cable Loss</label>
+                            <input id="rx_cable_loss" type="text">dB
+                        </div>
+                        <div>
+                            <label for="rx_misc_loss">Misc. Loss</label>
+                            <input id="rx_misc_loss" type="text">dB
+                        </div>
+                        <div>
+                            <label for="rx_ant_height">Height</label>
+                            <input id="rx_ant_height" type="text">m
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box1">
+                <div class="box2">
+                    <label for="box_distance">Distance</label>
+                    <div id="box_distance">
+                        <div>
+                            <label for="dist_target">Target</label>
+                            <input id="dist_target" type="text">m
+                        </div>
+                        <div>
+                            <label for="dist_min">Min.</label>
+                            <input id="dist_min" type="text">m
+                        </div>
+                        <div>
+                            <label for="dist_max">Max.</label>
+                            <input id="dist_max" type="text">m
+                        </div>
+                        <div>
+                            <label for="dist_interval">Calculation Inerval</label>
+                            <input id="dist_interval" type="text">m
+                        </div>
+                    </div>
+                </div>
+                <div class="box2">
+                    <label for="box_rx_power">Rx Power</label>
+                    <div id="box_rx_power">
+                        <div>
+                            <label for="rx_power">Estimation</label>
+                            <input id="rx_power" type="text">dBm
+                        </div>
+                        <div>
+                            <label for="str_index1">Index</label>
+                            <input id="str_index1" type="text">dBm
+                        </div>
+                        <div>
+                            <label for="str_range_high">High</label>
+                            <input id="str_range_high" type="text">dBm
+                        </div>
+                        <div>
+                            <label for="str_range_low">Low</label>
+                            <input id="str_range_low" type="text">dBm
+                        </div>
+                        <div>
+                            <label for="str_range_step">Step</label>
+                            <input id="str_range_step" type="text">dBm
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="canvas" id="canvas-path-loss"></div>
+        <div class="canvas" id="canvas-fresnel-ellipsoid"></div>
+
+        <hr>
+        <div id="info1"></div>
+        <div id="info2"></div>
+
+        <!--
+        <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.23.0/plotly.min.js" charset="utf-8"></script>
+        -->
+        <script src="js/plotly/plotly-2.23.0.min.js" charset="utf-8"></script>
+
+<script type="text/javascript" defer>
+
+const minimum_canvas_width = 600;
+const x_min_distance = 10;   // 10m
+
+const default_rf_params = {
+    'freq': 920,
+    'tx_power_dbm': 13,
+    'tx_cable_loss': 0,
+    'tx_ant_gain': 5,
+    'tx_ant_height': 10,
+    'tx_misc_loss': 0,
+    'misc_loss': 0,
+    'rx_cable_loss': 0,
+    'rx_ant_gain': 5,
+    'rx_ant_height': 1,
+    'rx_misc_loss': 0,
+    'dist_target': '',
+    'dist_min': 1,
+    'dist_max': 1000,
+    'dist_interval': 5,
+    'str_index1': -130,
+    'str_range_high': '',
+    'str_range_low': '',
+    'str_range_step': '',
+    };
+
+const path_loss_models = [
+    {
+        'element': 'ple_freespace',
+        'func': new plm_freespace(),
+    },
+    {
+        'element': 'ple_hata_open',
+        'func': new plm_hata_open(),
+    },
+    {
+        'element': 'ple_hata_suburb',
+        'func': new plm_hata_suburb(),
+    },
+    {
+            'element': 'ple_hata_urban',
+        'func': new plm_hata_urban(),
+    },
+    {
+        'element': 'ple_hata_urban_large',
+        'func': new plm_hata_urban_large(),
+    },
+    {
+       'element': 'ple_fixed',
+        'func': new plm_fixed(),
+    },
+    ];
+
+
+///// main
+
+let canvas_width = 0;
+let canvas1 = document.getElementById('canvas-path-loss');
+let canvas2 = document.getElementById('canvas-fresnel-ellipsoid');
+
+init();
+
+function set_base_size()
+{
+    //let height = `${window.innerHeight*.98}px`;
+    document.getElementById('base').style.setProperty('width',
+        `${window.innerWidth*.98}px`);
+
+    // set canvas width
+    if (window.innerWidth < 600) {
+        canvas1.style.setProperty('width', minimum_canvas_width);
+        canvas2.style.setProperty('width', minimum_canvas_width);
+        canvas_width = minimum_canvas_width;
+    } else {
+        canvas1.style.setProperty('width', window.innerWidth*.98);
+        canvas2.style.setProperty('width', window.innerWidth*.98);
+        canvas_width = window.innerWidth*.94;
+    }
+
+    draw_chart();
+}
+
+function put_info1(m)
+{
+    const info1 = document.getElementById('info1');
+    info1.value = m;
+}
+
+function put_info2(m)
+{
+    const info2 = document.getElementById('info2');
+    info2.value = m;
+}
+
+function dbm_to_mw(dbm)
+{
+    let base = 10;
+    return Math.round(Math.pow(10., (dbm/10.)) * base) / base;
+}
+
+function mw_to_dbm(mw)
+{
+    let base = 10;
+    return Math.round(10. * Math.log10(mw) * base) / base;
+}
+
+function ev_dbm_to_mw()
+{
+    document.getElementById('tx_power_mw').value = 
+        dbm_to_mw(parseFloat(document.getElementById('tx_power_dbm').value));
+}
+
+function ev_mw_to_dbm(e)
+{
+    document.getElementById('tx_power_dbm').value =
+        mw_to_dbm(parseFloat(document.getElementById('tx_power_mw').value));
+}
+
+function ev_change_rf_params()
+{
+    draw_chart();
+}
+
+function init()
+{
+    window.addEventListener('resize', set_base_size);
+    set_base_size();
+
+    // set default RF params.
+    Object.entries(default_rf_params).forEach(([k,v]) => {
+        document.getElementById(k).value = v;
+        });
+    ev_dbm_to_mw();
+    draw_chart();
+}
+
+function get_rf_params()
+{
+    // read RF params.
+    let params = {};
+    Object.entries(default_rf_params).forEach(([k,v]) => {
+        params[k] = parseFloat(document.getElementById(k).value);
+        });
+    return params;
+}
+
+function plm_fixed()
+{
+    this.model_name = 'Fixed PL';
+
+    this.get_path_loss = function(p, d) {
+        return parseFloat(document.getElementById('ple_fixed_value').value);
+    };
+}
+
+function plm_freespace()
+{
+    /*
+    Free-space path loss
+    https://en.wikipedia.org/wiki/Free-space_path_loss
+
+    FSPL = 20*log10(d) + 20*log10(f) - 27.55
+
+    FSPL(dB)
+    d(m)
+    f(MHz)
+     */
+    this.model_name = 'Free Space';
+
+    this.get_path_loss = function(p, d) {
+        return 20.*Math.log10(d) + 20.*Math.log10(p.freq) - 27.55;
+    };
+}
+
+/*
+Okumura-Hata model
+[1] https://en.wikipedia.org/wiki/Hata_model
+[2] https://www.cdt21.com/technical_tools/okumura-hata-curve/
+[3] https://www.gaussianwaves.com/2019/03/hata-okumura-model-for-outdoor-propagation/
+
+Note:
+
+the formulars in each reference are slightly different.
+Need to check the original paper.
+For example,
+The frequency boundary for a large city is 200 in [1],[3], but 400 in [2].
+The last value of the formula is 40.94 in [1],[2], but 40.98 in [3].
+The valid communication range is [1km, 20km] in [2],[3], but [1km, 10km] in [1].
+*/
+
+function plm_hata_circuitdesign(env_type, params, distance)
+{
+    /*
+    env_type: [ 'urban', 'large-urban', 'suburb', 'open']
+    return: { name: '...', x: [...], y: [...] }
+
+    This function is implemented based on [2].
+
+    PL = A + B*log10(d) - a + C
+    A = 69.55 + 26.16*log10(f) - 13.82*log10(hB)
+    B = 44.9 - 6.55*log10(hB)
+    open:
+        a = (1.1*log10(f) - 0.7)*hM - (1.56*log10(f) - 0.8)
+        C = -4.78*(log10(f)**2) + 18.33*log10(f) - 40.94
+    suburb:
+        a = (1.1*log10(f) - 0.7)*hM - (1.56*log10(f) - 0.8)
+        C = -2*(log10(f/28)**2) - 5.4
+    small or medium-sized city:
+        a = (1.1*log10(f) - 0.7)*hM - (1.56*log10(f) - 0.8)
+        C = 0
+    large city, f:[150, 400]:
+        a = 8.29*(log10(1.54*hM)**2) - 1.1
+        C = 0
+    large city, f:[400, 1500]:
+        a = 3.2*(log10(11.75*hM)**2) - 4.97
+        C = 0
+
+    f: frequency (MHz): [150, 1500]
+    d: distance (m): [1000, 20000]
+    hB: Ant height of Base station (m): [30, 200]
+    hM: Ant height of Mobile device (m): [1, 10]
+    */
+    let p = params;
+    let d = distance/1000;
+    let f = p.freq;
+    let hB = p.tx_ant_height;
+    let hM = p.rx_ant_height;
+    let log10 = Math.log10
+
+    const info_suffix = ' for HATA model. (circuitdesign)';
+    put_info2('The valid distance of HATA model is longer than 1000(m).');
+
+    if (f < 150 || f > 1500) {
+        put_info1('invalid frequency' + info_suffix);
+    }
+    if (hB < 30 || hB > 200) {
+        put_info1('invalid height of Tx antenna' + info_suffix);
+    }
+    if (hM < 1 || hM > 10) {
+        put_info1('invalid height of Rx antenna' + info_suffix);
+    }
+
+    let log10f = log10(f);
+    let A = 69.55 + 26.16*log10f - 13.82*log10(hB)
+    let B = 44.9 - 6.55*log10(hB)
+
+    if (env_type == 'open') {
+        a = (1.1*log10f - 0.7)*hM - (1.56*log10f - 0.8);
+        C = -4.78*(log10f**2) + 18.33*log10f - 40.94;
+    } else if (env_type == 'suburb') {
+        a = (1.1*log10f - 0.7)*hM - (1.56*log10f - 0.8);
+        // log10(f/28)**2
+        C = -2*((log10f - log10(28))**2) - 5.4;
+    } else if (env_type == 'urban') {
+        // small or medium-size
+        a = (1.1*log10f - 0.7)*hM - (1.56*log10f - 0.8);
+        C = 0;
+    } else if (env_type == 'urban-large') {
+        if (f <= 400) {
+            a = 8.29*(log10(1.54*hM)**2) - 1.1;
+            C = 0;
+        } else {
+            a = 3.2*(log10(11.75*hM)**2) - 4.97;
+            C = 0;
+        }
+    } else {
+        alert(`unknown ${env_type}`);
+    }
+
+    return A + B*log10(d) - a + C;
+}
+
+function plm_hata_open()
+{
+    this.model_name = 'HATA Open';
+    this.get_path_loss = function(p, d) {
+        return plm_hata_circuitdesign('open', p, d);
+    };
+}
+
+function plm_hata_suburb()
+{
+    this.model_name = 'HATA Suburb';
+    this.get_path_loss = function(p, d) {
+        return plm_hata_circuitdesign('suburb', p, d);
+    };
+}
+
+function plm_hata_urban()
+{
+    this.model_name = 'HATA Urban';
+    this.get_path_loss = function(p, d) {
+        return plm_hata_circuitdesign('urban', p, d);
+    };
+}
+
+function plm_hata_urban_large()
+{
+    this.model_name = 'HATA Large City';
+    this.get_path_loss = function(p, d) {
+        return plm_hata_circuitdesign('urban-large', p, d);
+    };
+}
+
+function get_line(model, params)
+{
+    /*
+     * return: data[name, x, y]
+     */
+    let p = params;
+    let data = {
+        name: model.model_name,
+        x: [],
+        y: [],
+    };
+    for (let d = 0.001; d < p.dist_max; d+= p.dist_interval) {
+        data.x.push(d);
+        let PL = model.get_path_loss(p, d);
+        let power = p.tx_power_dbm - p.tx_cable_loss - p.tx_misc_loss + p.tx_ant_gain - PL + p.rx_ant_gain - p.rx_misc_loss - p.rx_cable_loss;
+        data.y.push(power);
+    }
+    return data;
+}
+
+function draw_chart()
+{
+    let p = get_rf_params();
+    let lines = [];
+
+    path_loss_models.forEach(x => {
+        let e = document.getElementById(x.element);
+        if (e.checked === true) {
+            lines.push(get_line(x.func, p));
+        }
+    });
+
+    // focused lines.
+    if (p.dist_target > x_min_distance) {
+        let x_min_index = -1;
+        for (let j = 0; j < lines[0].x.length; j++) {
+            if (lines[0].x[j] > x_min_distance) {
+                x_min_index = j;
+                break;
+            }
+        }
+        if (x_min_index != -1) {
+            let y_max = -99999;
+            let y_min = 99999;
+            for (let i = 0; i < lines.length; i++) {
+                for (let j = x_min_index; j < lines[i].y.length; j++) {
+                    if (y_max < lines[i].y[j]) {
+                        y_max = lines[i].y[j];
+                    }
+                    if (y_min > lines[i].y[j]) {
+                        y_min = lines[i].y[j];
+                    }
+                }
+            }
+            let data = {
+                name: 'index distance',
+                x: [p.dist_target, p.dist_target],
+                y: [y_min, y_max],
+                line: {
+                    width: 1,
+                    dash: 'dot',
+                    color: 'rgb(230, 0, 0)',
+                },
+            };
+            lines.push(data);
+        } else {
+            alert("FATAL: distance is something wrong.");
+        }
+    }
+    if (!isNaN(p.str_index1)) {
+        let data = {
+            name: 'index strength',
+            x: [],
+            y: [],
+            line: {
+                width: 1,
+                dash: 'dot',
+                color: 'rgb(230, 0, 0)',
+            },
+        };
+        for (let d = 0.001; d < p.dist_max; d+= p.dist_interval) {
+            data.x.push(d);
+            data.y.push(p.str_index1);
+        }
+        lines.push(data);
+    }
+
+    // x axis
+    let x_range = undefined;
+    let x_autorange = true;
+    if (!isNaN(p.dist_min) || !isNaN(p.dist_max)) {
+        x_range = [p.dist_min, p.dist_max];
+        x_autorange = false;
+    }
+
+    // y axis
+    let y_range = undefined;
+    let y_autorange = true;
+    if (!isNaN(p.str_range_low) || !isNaN(p.str_range_high)) {
+        y_range = [p.str_range_low, p.str_range_high];
+        x_autorange = false;
+    }
+    let y_autotick = true;
+    let y_dtick = undefined;
+    if (isNaN(p.str_range_step) !== true) {
+        y_autotick = false;
+        y_dtick = p.str_range_step;
+    }
+
+    let layout = {
+        title: 'Path Loss',
+        xaxis: {
+            title: 'Distance (m)',
+            range: x_range,
+            autorange: x_autorange,
+            showgrid: true,
+            zeroline: true,
+        },
+        yaxis: {
+            title: 'Rx Power (dBm)',
+            range: y_range,
+            autorange: y_autorange,
+            showgrid: true,
+            zeroline: true,
+            autotick: y_autotick,
+            dtick: y_dtick,
+        },
+        width: canvas_width,
+        height: 600,
+    };
+
+    // XXX how to react ??
+    Plotly.newPlot(canvas1, lines, layout)
+        .catch(function(e){console.log('err2:', e)});
+
+    // if the target distance has a value, calculates the estimated Rx power.
+    // XXX
+    document.getElementById('rx_power').value = 'TBD';
+}
+
+</script>
+
+    </body>
+</html>
