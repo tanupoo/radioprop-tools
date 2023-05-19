@@ -287,7 +287,9 @@ const path_loss_models = [
 
 ///// main
 
-let canvas_width = 0;
+var canvas_width = 0;
+var current_model = '';
+
 const canvas1 = document.getElementById('canvas-path-loss');
 const info1 = document.getElementById('info1');
 const info2 = document.getElementById('info2');
@@ -807,14 +809,18 @@ function set_rf_estimation()
         return;
     }
 
-    // set some attributes of fixed_path_loss.
+    // set Path Loss value if needed.
     e = document.getElementById('fixed_path_loss');
     if (model.label != 'fixed') {
         e.disabled = true;
         e.value = round_base(model.get_path_loss(params, params.dist_target));
+        current_model = model.label;
     } else {
         e.disabled = false;
-        e.value = default_rf_params.fixed_path_loss;
+        if (current_model != 'fixed') {
+            e.value = default_rf_params.fixed_path_loss;
+            current_model = 'fixed';
+        }
     }
 
     let erip = get_tx_erip(params);
