@@ -24,13 +24,13 @@ input[type=text] {
     font-size: small;
 }
 .box1 {
-    width: 300px;
-    border: 1px solid silver;
+    width: 320px;
+    border: 2px solid #414141;
     margin: 4px;
 }
 .box2 {
-    width: 280px;
-    border: 1px solid silver;
+    width: 314px;
+    border-bottom: 1px solid #5b616b;
     margin: 4px;
 }
 .text-center {
@@ -89,14 +89,15 @@ input[type=text] {
                 <div class="box2">
                     <label for="box_tx_power">Tx Power</label>
                     <!-- XXX according to prod_dev -->
-                    <div id="box_tx_power">
-                        <div>
+                    <span id="box_tx_power">
+                        <span>
                             <input id="tx_power_dbm" type="text" oninput="ev_dbm_to_mw(this)">dBm
-                        </div>
-                        <div>
+                        </span>
+                        <span> &DoubleLeftRightArrow; </span>
+                        <span>
                             <input id="tx_power_mw" type="text" oninput="ev_mw_to_dbm(this)">mW
-                        </div>
-                    </div>
+                        </span>
+                    </span>
                 </div>
                 <div class="box2">
                     <label for="box_tx_antenna">Tx Antenna</label>
