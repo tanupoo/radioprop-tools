@@ -10,13 +10,9 @@
 
 label.t2 {
     margin: 4px;
-    font-weight: bold;
-    color: #505050;
 }
 label.t3 {
     margin: 4px;
-    font-weight: normal;
-    color: #505050;
 }
 label:not([class]) {
     font-weight: normal;
@@ -35,9 +31,21 @@ input[type=text] {
     font-weight: bold;
     padding: 6px;
 }
+.t2 {
+    font-weight: bold;
+    color: #505050;
+}
+.t3 {
+    font-weight: normal;
+    color: #505050;
+}
 .t4 {
     font-weight: bold;
     font-size: small;
+}
+.t5 {
+    font-weight: bold;
+    font-size: normal;
 }
 .box1 {
     width: 320px;
@@ -189,20 +197,20 @@ input[type=text] {
                         <div id="box_estimation">
                             <div>
                                 <label for="tx_erip_dbi">EIRP</label>
-                                <span id="tx_erip_dbi"></span> dBi
+                                <span class="t5" id="tx_erip_dbi"></span> dBi
                                 (<span id="tx_erip_mw"></span> mW)
                             </div>
                             <div>
                                 <label for="rx_fresnel_r1">Fresnel R1</label>
-                                <span id="rx_fresnel_r1"></span> m
+                                <span class="t5" id="rx_fresnel_r1"></span> m
                             </div>
                             <div>
                                 <label for="rx_fresnel_r1_60">60% of FR1</label>
-                                <input id="rx_fresnel_r1_60" type="text" disabled>m
+                                <input class="t5" id="rx_fresnel_r1_60" type="text" disabled>m
                             </div>
                             <div>
                                 <label for="rx_power">Rx Power</label>
-                                <input id="rx_power" type="text" disabled>dBm
+                                <input class="t5" id="rx_power" type="text" disabled>dBm
                             </div>
                         </div>
                     </div>
