@@ -11,6 +11,20 @@
 label {
     font-weight: bold;
 }
+input[type=text] {
+    width: 50px;
+}
+#table_path_loss_model {
+    padding: 4px;
+}
+.label_th {
+    font-weight: bold;
+    padding: 6px;
+}
+.label_misc {
+    font-weight: bold;
+    font-size: small;
+}
 
 #base {
     display: flex;
@@ -26,6 +40,18 @@ label {
     width: 280px;
     border: 1px solid silver;
     margin: 4px;
+}
+.text-center {
+    text-align: center;
+}
+#box_estimation {
+    background-color: rgb(255,228,242);
+}
+#box_fixed_path_loss {
+    background-color: #e7f4e4;
+}
+.path_loss_use {
+    background-color: #e7f4e4;
 }
 
 .canvas {
@@ -55,29 +81,31 @@ label {
                 -->
                 <div class="box2">
                     <label for="box_tx_power">Tx Power</label>
-                    <!-- XXX according to tx_prod_dev -->
+                    <!-- XXX according to prod_dev -->
                     <div id="box_tx_power">
                         <div>
-                            <input id="tx_power_dbm" type="text" onchange="ev_dbm_to_mw(this)">dBm
+                            <input id="tx_power_dbm" type="text" oninput="ev_dbm_to_mw(this)">dBm
                         </div>
                         <div>
-                            <input id="tx_power_mw" type="text" onchange="ev_mw_to_dbm(this)">mW
+                            <input id="tx_power_mw" type="text" oninput="ev_mw_to_dbm(this)">mW
                         </div>
                     </div>
                 </div>
                 <div class="box2">
-                    <!-- XXX according to tx_prod_ant -->
                     <label for="box_tx_antenna">Tx Antenna</label>
                     <div id="box_tx_antenna">
                         <div>
+                            <!-- XXX according to prod_ant -->
                             <label for="tx_ant_gain">Gain</label>
                             <input id="tx_ant_gain" type="text">dBi
                         </div>
                         <div>
+                            <!-- XXX according to prod_cable -->
                             <label for="tx_cable_loss">Cable Loss</label>
                             <input id="tx_cable_loss" type="text">dB
                         </div>
                         <div>
+                            <!-- XXX according to prod_misc -->
                             <label for="tx_misc_loss">Misc. Loss</label>
                             <input id="tx_misc_loss" type="text">dB
                         </div>
@@ -88,37 +116,11 @@ label {
                     </div>
                 </div>
                 <div class="box2">
-                    <label for="box_path_loss_model">Path Loss Model</label>
-                    <div id="box_path_loss_model">
-                        <div>
-                            <label for="ple_freespace">Free space</label>
-                            <input id="ple_freespace" type="checkbox" checked>
-                        </div>
-                        <div>
-                            <label for="ple_hata_open">Hata Open</label>
-                            <input id="ple_hata_open" type="checkbox" checked>
-                        </div>
-                        <div>
-                            <label for="ple_hata_suburb">Hata Suburb</label>
-                            <input id="ple_hata_suburb" type="checkbox" checked>
-                        </div>
-                        <div>
-                            <label for="ple_hata_urban">Hata Urban Small/Medium</label>
-                            <input id="ple_hata_urban" type="checkbox" checked>
-                        </div>
-                        <div>
-                            <label for="ple_hata_urban_large">Hata Large City</label>
-                            <input id="ple_hata_urban_large" type="checkbox" checked>
-                        </div>
-                        <div>
-                            <label for="ple_fixed">Fixed PL</label>
-                            <input id="ple_fixed" type="checkbox">
-                        </div>
-                    </div>
-                    <div>
+                    <div id="box_fixed_path_loss">
                         <!-- XXX enable it if "your estimation" is selected. -->
-                        <label for="ple_fixed_value">Fixed PL</label>
-                        <input id="ple_fixed_value" type="text" value="20">dB
+                        <label for="fixed_path_loss">Path Loss</label>
+                        <input id="fixed_path_loss" type="text">dB
+                        (<span class="label_misc">See *1</label>)
                     </div>
                 </div>
                 <div class="box2">
@@ -150,48 +152,74 @@ label {
 
             <div class="box1">
                 <div class="box2">
-                    <label for="box_distance">Distance</label>
-                    <div id="box_distance">
-                        <div>
-                            <label for="dist_target">Target</label>
-                            <input id="dist_target" type="text">m
-                        </div>
-                        <div>
-                            <label for="dist_min">Min.</label>
-                            <input id="dist_min" type="text">m
-                        </div>
-                        <div>
-                            <label for="dist_max">Max.</label>
-                            <input id="dist_max" type="text">m
-                        </div>
-                        <div>
-                            <label for="dist_interval">Calculation Inerval</label>
-                            <input id="dist_interval" type="text">m
-                        </div>
+                    <div>
+                        <label for="dist_target">Distance</label>
+                        <input id="dist_target" type="text">m
                     </div>
                 </div>
                 <div class="box2">
-                    <label for="box_rx_power">Rx Power</label>
-                    <div id="box_rx_power">
+                    <label for="box_estimation">Estimation</label>
+                    <div id="box_estimation">
                         <div>
-                            <label for="rx_power">Estimation</label>
-                            <input id="rx_power" type="text">dBm
+                            <label for="tx_erip_dbi">ERIP</label>
+                            <span id="tx_erip_dbi"></span> dBi
+                            (<span id="tx_erip_mw"></span> mW)
                         </div>
                         <div>
-                            <label for="str_index1">Index</label>
-                            <input id="str_index1" type="text">dBm
+                            <label for="rx_fresnel_r1">Fresnel R1</label>
+                            <span id="rx_fresnel_r1"></span> m
                         </div>
                         <div>
-                            <label for="str_range_high">High</label>
-                            <input id="str_range_high" type="text">dBm
+                            <label for="rx_fresnel_r1_60">60% of FR1</label>
+                            <input id="rx_fresnel_r1_60" type="text" disabled>m
                         </div>
                         <div>
-                            <label for="str_range_low">Low</label>
-                            <input id="str_range_low" type="text">dBm
+                            <label for="rx_power">Rx Power</label>
+                            <input id="rx_power" type="text" disabled>dBm
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box1">
+                <div class="box2">
+                    <label for="box_path_loss_model">Path Loss Model</label>
+                    <div id="box_path_loss_model">
+                    </div>
+                </div>
+            </div>
+
+            <div class="box1">
+                <div class="box2">
+                    <label for="box_chart_pl_params">Rx Power Chart</label>
+                    <div id="box_distance">
+                        <div>
+                            <label for="dist_min">Min. Dist.</label>
+                            <input id="dist_min" type="text">m
                         </div>
                         <div>
-                            <label for="str_range_step">Step</label>
-                            <input id="str_range_step" type="text">dBm
+                            <label for="dist_max">Max. Dist.</label>
+                            <input id="dist_max" type="text">m
+                        </div>
+                        <div>
+                            <label for="dist_interval">Dist. Inerval</label>
+                            <input id="dist_interval" type="text">m
+                        </div>
+                        <div>
+                            <label for="rx_power_index1">Index</label>
+                            <input id="rx_power_index1" type="text">dBm
+                        </div>
+                        <div>
+                            <label for="rx_power_high">Power High</label>
+                            <input id="rx_power_high" type="text">dBm
+                        </div>
+                        <div>
+                            <label for="rx_power_low">Power Low</label>
+                            <input id="rx_power_low" type="text">dBm
+                        </div>
+                        <div>
+                            <label for="rx_power_step">Power Step</label>
+                            <input id="rx_power_step" type="text">dBm
                         </div>
                     </div>
                 </div>
@@ -199,8 +227,8 @@ label {
 
         </div>
 
+        <hr>
         <div class="canvas" id="canvas-path-loss"></div>
-        <div class="canvas" id="canvas-fresnel-ellipsoid"></div>
 
         <hr>
         <div id="info1"></div>
@@ -214,7 +242,8 @@ label {
 <script type="text/javascript" defer>
 
 const minimum_canvas_width = 600;
-const x_min_distance = 10;   // 10m
+const x_min_distance = 9.9;   // 10m
+const significant_digit_base = 100; // 2
 
 const default_rf_params = {
     'freq': 920,
@@ -228,50 +257,38 @@ const default_rf_params = {
     'rx_ant_gain': 5,
     'rx_ant_height': 1,
     'rx_misc_loss': 0,
-    'dist_target': '',
+    'fixed_path_loss': 50,
+    'dist_target': 800,
     'dist_min': 1,
     'dist_max': 1000,
     'dist_interval': 5,
-    'str_index1': -130,
-    'str_range_high': '',
-    'str_range_low': '',
-    'str_range_step': '',
+    'rx_power_index1': -130,
+    'rx_power_high': 50,
+    'rx_power_low': -150,
+    'rx_power_step': 20,
     };
 
 const path_loss_models = [
-    {
-        'element': 'ple_freespace',
-        'func': new plm_freespace(),
-    },
-    {
-        'element': 'ple_hata_open',
-        'func': new plm_hata_open(),
-    },
-    {
-        'element': 'ple_hata_suburb',
-        'func': new plm_hata_suburb(),
-    },
-    {
-            'element': 'ple_hata_urban',
-        'func': new plm_hata_urban(),
-    },
-    {
-        'element': 'ple_hata_urban_large',
-        'func': new plm_hata_urban_large(),
-    },
-    {
-       'element': 'ple_fixed',
-        'func': new plm_fixed(),
-    },
+    new pl_model_freespace(),
+    new pl_model_hata_open(),
+    new pl_model_hata_suburb(),
+    new pl_model_hata_urban(),
+    new pl_model_hata_urban_large(),
+    new pl_model_fixed(),
     ];
-
 
 ///// main
 
 let canvas_width = 0;
-let canvas1 = document.getElementById('canvas-path-loss');
-let canvas2 = document.getElementById('canvas-fresnel-ellipsoid');
+const canvas1 = document.getElementById('canvas-path-loss');
+const info1 = document.getElementById('info1');
+const info2 = document.getElementById('info2');
 
+/*
+init() -> redraw()
+ev_resize() -> set_base_size() -> redraw()
+ev_change_rf_params() -> redraw()
+*/
 init();
 
 function set_base_size()
@@ -283,69 +300,137 @@ function set_base_size()
     // set canvas width
     if (window.innerWidth < 600) {
         canvas1.style.setProperty('width', minimum_canvas_width);
-        canvas2.style.setProperty('width', minimum_canvas_width);
         canvas_width = minimum_canvas_width;
     } else {
         canvas1.style.setProperty('width', window.innerWidth*.98);
-        canvas2.style.setProperty('width', window.innerWidth*.98);
         canvas_width = window.innerWidth*.94;
     }
+}
 
-    draw_chart();
+function round_base(v)
+{
+    return Math.round(v*significant_digit_base)/significant_digit_base;
 }
 
 function put_info1(m)
 {
-    const info1 = document.getElementById('info1');
-    info1.value = m;
+    info1.innerText = m;
 }
 
 function put_info2(m)
 {
-    const info2 = document.getElementById('info2');
-    info2.value = m;
+    info2.innerText = m;
 }
 
-function dbm_to_mw(dbm)
+function get_dbm_to_mw(dbm)
 {
     let base = 10;
-    return Math.round(Math.pow(10., (dbm/10.)) * base) / base;
+    let mw = Math.pow(10., (dbm/10.));
+    return round_base(mw);
 }
 
-function mw_to_dbm(mw)
+function get_mw_to_dbm(mw)
 {
     let base = 10;
-    return Math.round(10. * Math.log10(mw) * base) / base;
+    let dbm = 10. * Math.log10(mw);
+    return round_base(dbm);
 }
 
 function ev_dbm_to_mw()
 {
-    document.getElementById('tx_power_mw').value = 
-        dbm_to_mw(parseFloat(document.getElementById('tx_power_dbm').value));
+    let dbm = parseFloat(document.getElementById('tx_power_dbm').value);
+    document.getElementById('tx_power_mw').value = get_dbm_to_mw(dbm);
 }
 
 function ev_mw_to_dbm(e)
 {
-    document.getElementById('tx_power_dbm').value =
-        mw_to_dbm(parseFloat(document.getElementById('tx_power_mw').value));
+    let mw = parseFloat(document.getElementById('tx_power_mw').value);
+    document.getElementById('tx_power_dbm').value = get_mw_to_dbm(mw);
 }
 
 function ev_change_rf_params()
 {
-    draw_chart();
+    redraw();
+}
+
+function ev_resize()
+{
+    set_base_size();
+    redraw();
+}
+
+function init_path_loss_models()
+{
+    /*
+    make the below table for the path loss models.
+   */
+    let table = document.createElement('table');
+    table.id = 'table_path_loss_model';
+    let row, n, c;
+
+    let thead = table.createTHead();
+    row = thead.insertRow(0);
+    // td 0: model name
+    n = document.createElement('span');
+    n.appendChild(document.createTextNode('model'));
+    n.classList.add('label_th');
+    row.insertCell(-1).appendChild(n);
+    // td 1: for estimation.
+    n = document.createElement('span');
+    n.appendChild(document.createTextNode('PL(*1)'));
+    n.classList.add('label_th');
+    n.classList.add('path_loss_use');
+    n.classList.add('text-center');
+    row.insertCell(-1).appendChild(n);
+    // td 2: for chart.
+    n = document.createElement('span');
+    n.appendChild(document.createTextNode('Chart'));
+    n.classList.add('label_th');
+    row.insertCell(-1).appendChild(n);
+
+    let tbody = table.createTBody();
+    path_loss_models.forEach(x => {
+        row = tbody.insertRow(-1);
+        // td 0: model name
+        n = document.createTextNode(x.model_name);
+        row.insertCell(-1).appendChild(n);
+        // td 1: for estimation.
+        n = document.createElement('input');
+        n.id = `pl_use_${x.label}`;
+        n.type = 'radio';
+        n.name = 'pl_model_use';
+        n.x__model = x;
+        n.checked = x.label == 'fixed' ? true : false;
+        c = row.insertCell(-1);
+        c.classList.add('path_loss_use');
+        c.classList.add('text-center');
+        c.appendChild(n);
+        // td 2: for chart.
+        n = document.createElement('input');
+        n.id = `pl_chart_${x.label}`;
+        n.type = 'checkbox';
+        n.checked = x.label == 'fixed' ? false : true;
+        c = row.insertCell(-1);
+        c.classList.add('text-center');
+        c.appendChild(n);
+    });
+
+    document.getElementById('box_path_loss_model').appendChild(table);
 }
 
 function init()
 {
-    window.addEventListener('resize', set_base_size);
     set_base_size();
+    init_path_loss_models();
 
     // set default RF params.
     Object.entries(default_rf_params).forEach(([k,v]) => {
         document.getElementById(k).value = v;
         });
     ev_dbm_to_mw();
-    draw_chart();
+    redraw();
+
+    window.addEventListener('resize', ev_resize);
 }
 
 function get_rf_params()
@@ -358,16 +443,17 @@ function get_rf_params()
     return params;
 }
 
-function plm_fixed()
+function pl_model_fixed()
 {
     this.model_name = 'Fixed PL';
+    this.label = 'fixed';
 
     this.get_path_loss = function(p, d) {
-        return parseFloat(document.getElementById('ple_fixed_value').value);
+        return parseFloat(document.getElementById('fixed_path_loss').value);
     };
 }
 
-function plm_freespace()
+function pl_model_freespace()
 {
     /*
     Free-space path loss
@@ -380,6 +466,7 @@ function plm_freespace()
     f(MHz)
      */
     this.model_name = 'Free Space';
+    this.label = 'free_space';
 
     this.get_path_loss = function(p, d) {
         return 20.*Math.log10(d) + 20.*Math.log10(p.freq) - 27.55;
@@ -402,7 +489,7 @@ The last value of the formula is 40.94 in [1],[2], but 40.98 in [3].
 The valid communication range is [1km, 20km] in [2],[3], but [1km, 10km] in [1].
 */
 
-function plm_hata_circuitdesign(env_type, params, distance)
+function get_pl_hata(env_type, params, distance)
 {
     /*
     env_type: [ 'urban', 'large-urban', 'suburb', 'open']
@@ -484,72 +571,104 @@ function plm_hata_circuitdesign(env_type, params, distance)
     return A + B*log10(d) - a + C;
 }
 
-function plm_hata_open()
+function pl_model_hata_open()
 {
     this.model_name = 'HATA Open';
+    this.label = 'hata_open';
     this.get_path_loss = function(p, d) {
-        return plm_hata_circuitdesign('open', p, d);
+        return get_pl_hata('open', p, d);
     };
 }
 
-function plm_hata_suburb()
+function pl_model_hata_suburb()
 {
     this.model_name = 'HATA Suburb';
+    this.label = 'hata_suburb';
     this.get_path_loss = function(p, d) {
-        return plm_hata_circuitdesign('suburb', p, d);
+        return get_pl_hata('suburb', p, d);
     };
 }
 
-function plm_hata_urban()
+function pl_model_hata_urban()
 {
-    this.model_name = 'HATA Urban';
+    this.model_name = 'HATA Mid City';
+    this.label = 'hata_mid_city';
     this.get_path_loss = function(p, d) {
-        return plm_hata_circuitdesign('urban', p, d);
+        return get_pl_hata('urban', p, d);
     };
 }
 
-function plm_hata_urban_large()
+function pl_model_hata_urban_large()
 {
     this.model_name = 'HATA Large City';
+    this.label = 'hata_large_city';
     this.get_path_loss = function(p, d) {
-        return plm_hata_circuitdesign('urban-large', p, d);
+        return get_pl_hata('urban-large', p, d);
     };
 }
 
-function get_line(model, params)
+function get_tx_erip(params)
+{
+    /* return: dBi */
+    let p = params;
+    return p.tx_power_dbm - p.tx_cable_loss - p.tx_misc_loss + p.tx_ant_gain;
+}
+
+function get_rx_power(model, params, distance)
+{
+    let p = params;
+    let PL = model.get_path_loss(p, distance);
+    let rxp = get_tx_erip(params) - PL + p.rx_ant_gain - p.rx_misc_loss - p.rx_cable_loss;
+    return round_base(rxp);
+}
+
+function get_rx_power_curve(model, params)
 {
     /*
      * return: data[name, x, y]
      */
-    let p = params;
     let data = {
         name: model.model_name,
         x: [],
         y: [],
     };
-    for (let d = 0.001; d < p.dist_max; d+= p.dist_interval) {
+    for (let d = 0.001; d < params.dist_max; d+= params.dist_interval) {
         data.x.push(d);
-        let PL = model.get_path_loss(p, d);
-        let power = p.tx_power_dbm - p.tx_cable_loss - p.tx_misc_loss + p.tx_ant_gain - PL + p.rx_ant_gain - p.rx_misc_loss - p.rx_cable_loss;
+        let power = get_rx_power(model, params, d);
         data.y.push(power);
     }
     return data;
 }
 
-function draw_chart()
+function get_fresnel_zone_r1()
+{
+    /*
+    https://en.wikipedia.org/wiki/Fresnel_zone
+    F1 = 8.656 * sqr(D/f)
+    F1: 1st Fresnel zone (m)
+    D: distance between the two antenna (km)
+    f: frequency (GHz)
+    */
+    let p = get_rf_params();
+    let r1 = 8.656*Math.sqrt(p.dist_target/p.freq);
+    return round_base(r1);
+}
+
+function draw_rx_power()
 {
     let p = get_rf_params();
     let lines = [];
 
     path_loss_models.forEach(x => {
-        let e = document.getElementById(x.element);
+        let e = document.getElementById(`pl_chart_${x.label}`);
         if (e.checked === true) {
-            lines.push(get_line(x.func, p));
+            lines.push(get_rx_power_curve(x, p));
         }
     });
 
-    // focused lines.
+    // target distance (vertical line)
     if (p.dist_target > x_min_distance) {
+        // ignore it if the target distance is less than x_min_distance.
         let x_min_index = -1;
         for (let j = 0; j < lines[0].x.length; j++) {
             if (lines[0].x[j] > x_min_distance) {
@@ -557,9 +676,17 @@ function draw_chart()
                 break;
             }
         }
-        if (x_min_index != -1) {
+        //if (x_min_index != -1) {
+        if (1) {
+            x_min_index = 0;
             let y_max = -99999;
             let y_min = 99999;
+            if (!isNaN(p.rx_power_high)) {
+                y_max = p.rx_power_high;
+            }
+            if (!isNaN(p.rx_power_low)) {
+                y_min = p.rx_power_low;
+            }
             for (let i = 0; i < lines.length; i++) {
                 for (let j = x_min_index; j < lines[i].y.length; j++) {
                     if (y_max < lines[i].y[j]) {
@@ -585,7 +712,9 @@ function draw_chart()
             alert("FATAL: distance is something wrong.");
         }
     }
-    if (!isNaN(p.str_index1)) {
+
+    // Rx power index (horizontal line)
+    if (!isNaN(p.rx_power_index1)) {
         let data = {
             name: 'index strength',
             x: [],
@@ -598,7 +727,7 @@ function draw_chart()
         };
         for (let d = 0.001; d < p.dist_max; d+= p.dist_interval) {
             data.x.push(d);
-            data.y.push(p.str_index1);
+            data.y.push(p.rx_power_index1);
         }
         lines.push(data);
     }
@@ -614,19 +743,19 @@ function draw_chart()
     // y axis
     let y_range = undefined;
     let y_autorange = true;
-    if (!isNaN(p.str_range_low) || !isNaN(p.str_range_high)) {
-        y_range = [p.str_range_low, p.str_range_high];
+    if (!isNaN(p.rx_power_low) || !isNaN(p.rx_power_high)) {
+        y_range = [p.rx_power_low, p.rx_power_high];
         x_autorange = false;
     }
     let y_autotick = true;
     let y_dtick = undefined;
-    if (isNaN(p.str_range_step) !== true) {
+    if (isNaN(p.rx_power_step) !== true) {
         y_autotick = false;
-        y_dtick = p.str_range_step;
+        y_dtick = p.rx_power_step;
     }
 
     let layout = {
-        title: 'Path Loss',
+        title: 'Rx Power Chart',
         xaxis: {
             title: 'Distance (m)',
             range: x_range,
@@ -650,10 +779,52 @@ function draw_chart()
     // XXX how to react ??
     Plotly.newPlot(canvas1, lines, layout)
         .catch(function(e){console.log('err2:', e)});
+}
 
-    // if the target distance has a value, calculates the estimated Rx power.
-    // XXX
-    document.getElementById('rx_power').value = 'TBD';
+function set_rf_estimation()
+{
+    let params = get_rf_params();
+
+    // find the model to be used.
+    let e = document.getElementsByName('pl_model_use');
+    let model = undefined;
+    for(i = 0; i < e.length; i++) {
+        if(e[i].checked) {
+            model = e[i].x__model;
+            break;
+        }
+    }
+    if (model === undefined) {
+        //alert("FATAL: Invalid Path Loass Model is selected.");
+        return;
+    }
+
+    // set some attributes of fixed_path_loss.
+    e = document.getElementById('fixed_path_loss');
+    if (model.label != 'fixed') {
+        e.disabled = true;
+        e.value = round_base(model.get_path_loss(params, params.dist_target));
+    } else {
+        e.disabled = false;
+        e.value = default_rf_params.fixed_path_loss;
+    }
+
+    let erip = get_tx_erip(params);
+    document.getElementById('tx_erip_dbi').innerText = erip;
+    document.getElementById('tx_erip_mw').innerText = get_dbm_to_mw(erip);
+
+    let rxp = get_rx_power(model, params, params.dist_target);
+    document.getElementById('rx_power').value = rxp;
+
+    let fr1 = get_fresnel_zone_r1();
+    document.getElementById('rx_fresnel_r1').innerText = fr1;
+    document.getElementById('rx_fresnel_r1_60').value = round_base(fr1*0.6);
+}
+
+function redraw()
+{
+    set_rf_estimation();
+    draw_rx_power();
 }
 
 </script>
