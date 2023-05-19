@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width,initial-scale=1">
         <link rel="icon" href="data:,"> <!-- NOTE: Remove it for valid icon. -->
-        <title>Wireless Calculator</title>
+        <title>Rx Power Calculator</title>
 
 <style>
 
@@ -14,9 +14,7 @@ label {
 input[type=text] {
     width: 50px;
 }
-#table_path_loss_model {
-    padding: 4px;
-}
+
 .label_th {
     font-weight: bold;
     padding: 6px;
@@ -24,12 +22,6 @@ input[type=text] {
 .label_misc {
     font-weight: bold;
     font-size: small;
-}
-
-#base {
-    display: flex;
-    flex-wrap: wrap;
-    border: 1px solid silver;
 }
 .box1 {
     width: 300px;
@@ -44,24 +36,39 @@ input[type=text] {
 .text-center {
     text-align: center;
 }
+.path_loss_use {
+    background-color: #e7f4e4;
+}
+.canvas {
+    height: 250px;
+}
+
+#title {
+    font-size: large;
+    font-weight: bold;
+}
+#table_path_loss_model {
+    padding: 4px;
+}
+#base {
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid silver;
+}
 #box_estimation {
     background-color: rgb(255,228,242);
 }
 #box_fixed_path_loss {
     background-color: #e7f4e4;
 }
-.path_loss_use {
-    background-color: #e7f4e4;
-}
 
-.canvas {
-    height: 250px;
-}
 </style>
 
     </head>
 
     <body>
+
+        <div id="title">Rx Power Calculator</div>
 
         <div id="base" oninput="ev_change_rf_params()">
 
