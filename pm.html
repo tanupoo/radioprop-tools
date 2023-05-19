@@ -8,29 +8,51 @@
 
 <style>
 
-label {
+label.t2 {
+    margin: 4px;
     font-weight: bold;
+    color: #505050;
+}
+label.t3 {
+    margin: 4px;
+    font-weight: normal;
+    color: #505050;
+}
+label:not([class]) {
+    font-weight: normal;
+}
+label:not([class]):after {
+    content: ": "
 }
 input[type=text] {
     width: 50px;
+    font-weight: bold;
+    padding: 2px;
+    margin: 2px;
 }
 
-.label_th {
+.th_plm { /* thead of Packet Loss Models */
     font-weight: bold;
     padding: 6px;
 }
-.label_misc {
+.t4 {
     font-weight: bold;
     font-size: small;
 }
 .box1 {
     width: 320px;
     border: 2px solid #414141;
-    margin: 4px;
+    margin: 2px;
+    padding: 2px;
 }
 .box2 {
     width: 314px;
-    border-bottom: 1px solid #5b616b;
+    /*border-top: 1px solid #5b616b;*/
+    margin: 0px;
+}
+.box3 {
+    width: 314px;
+    border-top: 1px solid #5b616b;
     margin: 4px;
 }
 .text-center {
@@ -73,73 +95,71 @@ input[type=text] {
         <div id="base" oninput="ev_change_rf_params()">
 
             <div class="box1">
-                <div class="box2">
-                    <label for="freq">Frequency</label>
-                    <input id="freq" type="text">MHz
-                </div>
-                <!--
-                <div>
-                    <label for="tx_prod_dev">Product Name</label>
-                    <select id="tx_prod_dev">
-                        <option value="txp_unknown">Unknown</option>
-                        <option value="txp_iw9165d">IW9165D</option>
+                <div class="box3">
+                    <label class="t2" for="box_tx_params">Tx Parameters</label>
+                    <div>
+                        <label for="freq">Frequency</label>
+                        <input id="freq" type="text">MHz
                     </div>
-                </div>
-                -->
-                <div class="box2">
-                    <label for="box_tx_power">Tx Power</label>
-                    <!-- XXX according to prod_dev -->
-                    <span id="box_tx_power">
-                        <span>
-                            <input id="tx_power_dbm" type="text" oninput="ev_dbm_to_mw(this)">dBm
-                        </span>
-                        <span> &DoubleLeftRightArrow; </span>
-                        <span>
-                            <input id="tx_power_mw" type="text" oninput="ev_mw_to_dbm(this)">mW
-                        </span>
-                    </span>
-                </div>
-                <div class="box2">
-                    <label for="box_tx_antenna">Tx Antenna</label>
-                    <div id="box_tx_antenna">
-                        <div>
-                            <!-- XXX according to prod_ant -->
-                            <label for="tx_ant_gain">Gain</label>
-                            <input id="tx_ant_gain" type="text">dBi
-                        </div>
-                        <div>
-                            <!-- XXX according to prod_cable -->
-                            <label for="tx_cable_loss">Cable Loss</label>
-                            <input id="tx_cable_loss" type="text">dB
-                        </div>
-                        <div>
-                            <!-- XXX according to prod_misc -->
-                            <label for="tx_misc_loss">Misc. Loss</label>
-                            <input id="tx_misc_loss" type="text">dB
-                        </div>
-                        <div>
-                            <label for="tx_ant_height">Height</label>
-                            <input id="tx_ant_height" type="text">m
+                    <!--
+                    <div>
+                        <label for="tx_prod_dev">Product Name</label>
+                        <select id="tx_prod_dev">
+                            <option value="txp_unknown">Unknown</option>
+                            <option value="txp_iw9165d">IW9165D</option>
                         </div>
                     </div>
+                    -->
+                    <div>
+                        <label for="box_tx_power">Tx Power</label>
+                        <!-- XXX according to prod_dev -->
+                        <span id="box_tx_power">
+                            <span>
+                                <input id="tx_power_dbm" type="text" oninput="ev_dbm_to_mw(this)">dBm
+                            </span>
+                            <span> &DoubleLeftRightArrow; </span>
+                            <span>
+                                <input id="tx_power_mw" type="text" oninput="ev_mw_to_dbm(this)">mW
+                            </span>
+                        </span>
+                    </div>
+                    <div>
+                        <!-- XXX according to prod_ant -->
+                        <label for="tx_ant_gain">Antenna Gain</label>
+                        <input id="tx_ant_gain" type="text">dBi
+                    </div>
+                    <div>
+                        <!-- XXX according to prod_cable -->
+                        <label for="tx_cable_loss">Cable Loss</label>
+                        <input id="tx_cable_loss" type="text">dB
+                    </div>
+                    <div>
+                        <!-- XXX according to prod_misc -->
+                        <label for="tx_misc_loss">Misc. Loss</label>
+                        <input id="tx_misc_loss" type="text">dB
+                    </div>
+                    <div>
+                        <label for="tx_ant_height">Height</label>
+                        <input id="tx_ant_height" type="text">m
+                    </div>
                 </div>
-                <div class="box2">
+                <div class="box3">
                     <div id="box_fixed_path_loss">
                         <!-- XXX enable it if "your estimation" is selected. -->
                         <label for="fixed_path_loss">Path Loss</label>
                         <input id="fixed_path_loss" type="text">dB
-                        (<span class="label_misc">See *1</label>)
+                        (<span class="t4">See *1</label>)
+                    </div>
+                    <div>
+                        <label for="misc_loss">Misc. Loss</label>
+                        <input id="misc_loss" type="text">dB
                     </div>
                 </div>
-                <div class="box2">
-                    <label for="misc_loss">Misc. Loss</label>
-                    <input id="misc_loss" type="text">dB
-                </div>
-                <div class="box2">
-                    <label for="box_rx_antenna">Rx Antenna</label>
-                    <div id="box_rx_antenna">
+                <div class="box3">
+                    <label class="t2" for="box_rx_params">Rx Parameters</label>
+                    <div id="box_rx_params">
                         <div>
-                            <label for="rx_ant_gain">Gain</label>
+                            <label for="rx_ant_gain">Antenna Gain</label>
                             <input id="rx_ant_gain" type="text">dBi
                         </div>
                         <div>
@@ -160,74 +180,82 @@ input[type=text] {
 
             <div class="box1">
                 <div class="box2">
-                    <div>
+                    <div class="box3">
                         <label for="dist_target">Distance</label>
                         <input id="dist_target" type="text">m
                     </div>
-                </div>
-                <div class="box2">
-                    <label for="box_estimation">Estimation</label>
-                    <div id="box_estimation">
-                        <div>
-                            <label for="tx_erip_dbi">ERIP</label>
-                            <span id="tx_erip_dbi"></span> dBi
-                            (<span id="tx_erip_mw"></span> mW)
-                        </div>
-                        <div>
-                            <label for="rx_fresnel_r1">Fresnel R1</label>
-                            <span id="rx_fresnel_r1"></span> m
-                        </div>
-                        <div>
-                            <label for="rx_fresnel_r1_60">60% of FR1</label>
-                            <input id="rx_fresnel_r1_60" type="text" disabled>m
-                        </div>
-                        <div>
-                            <label for="rx_power">Rx Power</label>
-                            <input id="rx_power" type="text" disabled>dBm
+                    <div class="box3">
+                        <label class="t2" for="box_estimation">Estimation</label>
+                        <div id="box_estimation">
+                            <div>
+                                <label for="tx_erip_dbi">EIRP</label>
+                                <span id="tx_erip_dbi"></span> dBi
+                                (<span id="tx_erip_mw"></span> mW)
+                            </div>
+                            <div>
+                                <label for="rx_fresnel_r1">Fresnel R1</label>
+                                <span id="rx_fresnel_r1"></span> m
+                            </div>
+                            <div>
+                                <label for="rx_fresnel_r1_60">60% of FR1</label>
+                                <input id="rx_fresnel_r1_60" type="text" disabled>m
+                            </div>
+                            <div>
+                                <label for="rx_power">Rx Power</label>
+                                <input id="rx_power" type="text" disabled>dBm
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="box1">
-                <div class="box2">
-                    <label for="box_path_loss_model">Path Loss Model</label>
+                <label class="t2" for="box_path_loss_model_selector">Path Loss Model</label>
+                <div class="box3" id="box_path_loss_model_selector">
                     <div id="box_path_loss_model">
                     </div>
                 </div>
             </div>
 
             <div class="box1">
-                <div class="box2">
-                    <label for="box_chart_pl_params">Rx Power Chart</label>
-                    <div id="box_distance">
-                        <div>
-                            <label for="dist_min">Min. Dist.</label>
-                            <input id="dist_min" type="text">m
+                <label class="t2" for="box_chart_params">Rx Power Chart</label>
+                <div class="box2" id="box_chart_params">
+                    <div class="box3">
+                        <label class="t3" for="box_chart_distance">Distance Params.</label>
+                        <div id="box_chart_distance">
+                            <div>
+                                <label for="dist_min">Min. Dist.</label>
+                                <input id="dist_min" type="text">m
+                            </div>
+                            <div>
+                                <label for="dist_max">Max. Dist.</label>
+                                <input id="dist_max" type="text">m
+                            </div>
+                            <div>
+                                <label for="dist_interval">Dist. Inerval</label>
+                                <input id="dist_interval" type="text">m
+                            </div>
                         </div>
-                        <div>
-                            <label for="dist_max">Max. Dist.</label>
-                            <input id="dist_max" type="text">m
-                        </div>
-                        <div>
-                            <label for="dist_interval">Dist. Inerval</label>
-                            <input id="dist_interval" type="text">m
-                        </div>
-                        <div>
-                            <label for="rx_power_index1">Index</label>
-                            <input id="rx_power_index1" type="text">dBm
-                        </div>
-                        <div>
-                            <label for="rx_power_high">Power High</label>
-                            <input id="rx_power_high" type="text">dBm
-                        </div>
-                        <div>
-                            <label for="rx_power_low">Power Low</label>
-                            <input id="rx_power_low" type="text">dBm
-                        </div>
-                        <div>
-                            <label for="rx_power_step">Power Step</label>
-                            <input id="rx_power_step" type="text">dBm
+                    </div>
+                    <div class="box3">
+                        <label class="t3" for="box_chart_rx_power">Rx Power Params.</label>
+                        <div id="box_chart_rx_power">
+                            <div>
+                                <label for="rx_power_index1">Index</label>
+                                <input id="rx_power_index1" type="text">dBm
+                            </div>
+                            <div>
+                                <label for="rx_power_high">Power High</label>
+                                <input id="rx_power_high" type="text">dBm
+                            </div>
+                            <div>
+                                <label for="rx_power_low">Power Low</label>
+                                <input id="rx_power_low" type="text">dBm
+                            </div>
+                            <div>
+                                <label for="rx_power_step">Power Step</label>
+                                <input id="rx_power_step" type="text">dBm
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -383,19 +411,19 @@ function init_path_loss_models()
     // td 0: model name
     n = document.createElement('span');
     n.appendChild(document.createTextNode('model'));
-    n.classList.add('label_th');
+    n.classList.add('th_plm');
     row.insertCell(-1).appendChild(n);
     // td 1: for estimation.
     n = document.createElement('span');
     n.appendChild(document.createTextNode('PL(*1)'));
-    n.classList.add('label_th');
+    n.classList.add('th_plm');
     n.classList.add('path_loss_use');
     n.classList.add('text-center');
     row.insertCell(-1).appendChild(n);
     // td 2: for chart.
     n = document.createElement('span');
     n.appendChild(document.createTextNode('Chart'));
-    n.classList.add('label_th');
+    n.classList.add('th_plm');
     row.insertCell(-1).appendChild(n);
 
     let tbody = table.createTBody();
