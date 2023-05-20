@@ -109,15 +109,6 @@ input[type=text] {
                         <label for="freq">Frequency</label>
                         <input id="freq" type="text">MHz
                     </div>
-                    <!--
-                    <div>
-                        <label for="tx_prod_dev">Product Name</label>
-                        <select id="tx_prod_dev">
-                            <option value="txp_unknown">Unknown</option>
-                            <option value="txp_iw9165d">IW9165D</option>
-                        </div>
-                    </div>
-                    -->
                     <div>
                         <label for="box_tx_power">Tx Power</label>
                         <!-- XXX according to prod_dev -->
@@ -225,48 +216,50 @@ input[type=text] {
                 </div>
             </div>
 
-            <div class="box1">
-                <label class="t2" for="box_chart_params">Rx Power Chart</label>
-                <div class="box2" id="box_chart_params">
-                    <div class="box3">
-                        <label class="t3" for="box_chart_distance">Distance Params.</label>
-                        <div id="box_chart_distance">
-                            <div>
-                                <label for="dist_min">Min. Dist.</label>
-                                <input id="dist_min" type="text">m
-                            </div>
-                            <div>
-                                <label for="dist_max">Max. Dist.</label>
-                                <input id="dist_max" type="text">m
-                            </div>
-                            <div>
-                                <label for="dist_interval">Dist. Inerval</label>
-                                <input id="dist_interval" type="text">m
-                            </div>
+            <div class="box1" id="box_chart_params">
+                <div>
+                    <input id="enable_chart_rx_power" type="checkbox">
+                    <label class="t2" for="box_chart_params">Rx Power Chart</label>
+                </div>
+                <div class="box3">
+                    <label class="t3" for="box_chart_distance">Distance Params.</label>
+                    <div id="box_chart_distance">
+                        <div>
+                            <label for="dist_min">Min. Dist.</label>
+                            <input id="dist_min" type="text">m
                         </div>
-                    </div>
-                    <div class="box3">
-                        <label class="t3" for="box_chart_rx_power">Rx Power Params.</label>
-                        <div id="box_chart_rx_power">
-                            <div>
-                                <label for="rx_power_index1">Index</label>
-                                <input id="rx_power_index1" type="text">dBm
-                            </div>
-                            <div>
-                                <label for="rx_power_high">Power High</label>
-                                <input id="rx_power_high" type="text">dBm
-                            </div>
-                            <div>
-                                <label for="rx_power_low">Power Low</label>
-                                <input id="rx_power_low" type="text">dBm
-                            </div>
-                            <div>
-                                <label for="rx_power_step">Power Step</label>
-                                <input id="rx_power_step" type="text">dBm
-                            </div>
+                        <div>
+                            <label for="dist_max">Max. Dist.</label>
+                            <input id="dist_max" type="text">m
+                        </div>
+                        <div>
+                            <label for="dist_interval">Dist. Inerval</label>
+                            <input id="dist_interval" type="text">m
                         </div>
                     </div>
                 </div>
+                <div class="box3">
+                    <label class="t3" for="box_chart_rx_power">Rx Power Params.</label>
+                    <div id="box_chart_rx_power">
+                        <div>
+                            <label for="rx_power_index1">Index</label>
+                            <input id="rx_power_index1" type="text">dBm
+                        </div>
+                        <div>
+                            <label for="rx_power_high">Power High</label>
+                            <input id="rx_power_high" type="text">dBm
+                        </div>
+                        <div>
+                            <label for="rx_power_low">Power Low</label>
+                            <input id="rx_power_low" type="text">dBm
+                        </div>
+                        <div>
+                            <label for="rx_power_step">Power Step</label>
+                            <input id="rx_power_step" type="text">dBm
+                        </div>
+                    </div>
+                </div>
+            </div>
             </div>
 
         </div>
@@ -874,7 +867,11 @@ function set_rf_estimation()
 function redraw()
 {
     set_rf_estimation();
-    draw_rx_power();
+    if (document.getElementById('enable_chart_rx_power').checked === true) {
+        draw_rx_power();
+    } else {
+        Plotly.purge(canvas1);
+    }
 }
 
 </script>
