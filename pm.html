@@ -973,7 +973,7 @@ function load_files()
             let lines = csv_file.split(/\r?\n/);
             // check the version.
             v = lines.shift().split(',');
-console.log('version:', v);
+//console.log('version:', v);
             if (v[0] == 'FormatVersion' && v[1] == '0.1a') {
                 put_info2(`WARNING: invalid file format. ${v[0]}`);
             }
@@ -1031,36 +1031,43 @@ console.log('version:', v);
     }
 
     function post_load_files() {
-console.log('pdb:', pdb);
+//console.log('pdb:', pdb);
         // creating the selectors.
         const dispatch_table = [
             {
                 'element': 'prod_tx_device',
                 'pdb_list': pdb.device,
+                'unit': 'dBm',
             },
             {
                 'element': 'prod_tx_other',
                 'pdb_list': pdb.other,
+                'unit': 'dB',
             },
             {
                 'element': 'prod_tx_cable',
                 'pdb_list': pdb.cable,
+                'unit': 'dB',
             },
             {
                 'element': 'prod_tx_antenna',
                 'pdb_list': pdb.antenna,
+                'unit': 'dBi',
             },
             {
                 'element': 'prod_rx_antenna',
                 'pdb_list': pdb.antenna,
+                'unit': 'dBi',
             },
             {
                 'element': 'prod_rx_cable',
                 'pdb_list': pdb.cable,
+                'unit': 'dB',
             },
             {
                 'element': 'prod_rx_other',
                 'pdb_list': pdb.other,
+                'unit': 'dB',
             },
         ];
         dispatch_table.forEach(dp => {
@@ -1071,12 +1078,14 @@ console.log('pdb:', pdb);
             }
             // initialize the options of each select.
             if (dp.pdb_list !== undefined) {
-                function addopt(obj) {
+                function addopt(a) {
                     let no = document.createElement('option');
-                    let name = Object.values(obj).join(',');
-                    no.appendChild(document.createTextNode(name));
-                    if (Object.keys(obj).length != 0) {
-                        no.setAttribute('value', JSON.stringify(obj.seq));
+                    if (Object.keys(a).length != 0) {
+                        let name = `${a.prod} ${a.value}${dp.unit} [${a.freq_low}, ${a.freq_high}] ${a.region}`;
+                        no.appendChild(document.createTextNode(name));
+                        no.setAttribute('value', JSON.stringify(a.seq));
+                    } else {
+                        no.appendChild(document.createTextNode(''));
                     }
                     sel.appendChild(no);
                 }
