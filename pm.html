@@ -21,16 +21,37 @@ label:not([class]):after {
     content: ": "
 }
 input[type=text] {
-    width: 50px;
+    width: 56px;
     font-weight: bold;
     padding: 2px;
     margin: 2px;
 }
 
-.th_plm { /* thead of Packet Loss Models */
-    font-weight: bold;
-    padding: 6px;
+/* box */
+.b1 {
+    width: 320px;
+    border: 2px solid #414141;
+    margin: 2px;
+    padding: 2px;
 }
+.b2 {
+    width: 314px;
+    margin: 0px;
+}
+.b3t {
+    width: 314px;
+    margin: 4px;
+}
+.b3 {
+    width: 314px;
+    margin: 4px;
+    border-top: 1px solid #5b616b;
+}
+.b5 {
+    width: 140px;
+    margin: 4px;
+}
+/* text */
 .t2 {
     font-weight: bold;
     color: #505050;
@@ -47,43 +68,31 @@ input[type=text] {
     font-weight: bold;
     font-size: normal;
 }
-.box1 {
-    width: 320px;
-    border: 2px solid #414141;
-    margin: 2px;
-    padding: 2px;
-}
-.box2 {
-    width: 314px;
-    /*border-top: 1px solid #5b616b;*/
-    margin: 0px;
-}
-.box3 {
-    width: 314px;
-    border-top: 1px solid #5b616b;
-    margin: 4px;
-}
-.text-center {
+.t-center {
     text-align: center;
+}
+/* */
+.canvas {
+    height: 250px;
+}
+.th_plm { /* thead of Packet Loss Models */
+    font-weight: bold;
+    padding: 6px;
 }
 .path_loss_use {
     background-color: #e7f4e4;
 }
-.canvas {
-    height: 250px;
-}
 
+#base1, #base2 {
+    display: flex;
+    flex-wrap: wrap;
+}
 #title {
     font-size: large;
     font-weight: bold;
 }
 #table_path_loss_model {
     padding: 4px;
-}
-#base {
-    display: flex;
-    flex-wrap: wrap;
-    border: 1px solid silver;
 }
 #box_estimation {
     background-color: rgb(255,228,242);
@@ -100,18 +109,17 @@ input[type=text] {
 
         <div id="title">Rx Power Calculator</div>
 
-        <div id="base" oninput="ev_change_rf_params()">
+        <div id="base1" oninput="ev_change_rf_params()">
 
-            <div class="box1">
-                <div class="box3">
+            <div class="b1">
+                <div class="b3t">
                     <label class="t2" for="box_tx_params">Tx Parameters</label>
                     <div>
                         <label for="freq">Frequency</label>
                         <input id="freq" type="text">MHz
                     </div>
                     <div>
-                        <label for="box_tx_power">Tx Power</label>
-                        <!-- XXX according to prod_dev -->
+                        <label for="box_tx_power">Power</label>
                         <span id="box_tx_power">
                             <span>
                                 <input id="tx_power_dbm" type="text" oninput="ev_dbm_to_mw(this)">dBm
@@ -123,17 +131,14 @@ input[type=text] {
                         </span>
                     </div>
                     <div>
-                        <!-- XXX according to prod_ant -->
                         <label for="tx_ant_gain">Antenna Gain</label>
                         <input id="tx_ant_gain" type="text">dBi
                     </div>
                     <div>
-                        <!-- XXX according to prod_cable -->
                         <label for="tx_cable_loss">Cable Loss</label>
                         <input id="tx_cable_loss" type="text">dB
                     </div>
                     <div>
-                        <!-- XXX according to prod_misc -->
                         <label for="tx_misc_loss">Misc. Loss</label>
                         <input id="tx_misc_loss" type="text">dB
                     </div>
@@ -142,9 +147,8 @@ input[type=text] {
                         <input id="tx_ant_height" type="text">m
                     </div>
                 </div>
-                <div class="box3">
+                <div class="b3">
                     <div id="box_fixed_path_loss">
-                        <!-- XXX enable it if "your estimation" is selected. -->
                         <label for="fixed_path_loss">Path Loss</label>
                         <input id="fixed_path_loss" type="text">dB
                         (<span class="t4">See *1</label>)
@@ -154,7 +158,7 @@ input[type=text] {
                         <input id="misc_loss" type="text">dB
                     </div>
                 </div>
-                <div class="box3">
+                <div class="b3">
                     <label class="t2" for="box_rx_params">Rx Parameters</label>
                     <div id="box_rx_params">
                         <div>
@@ -177,13 +181,13 @@ input[type=text] {
                 </div>
             </div>
 
-            <div class="box1">
-                <div class="box2">
-                    <div class="box3">
+            <div class="b1">
+                <div class="b2">
+                    <div class="b3t">
                         <label for="dist_target">Distance</label>
                         <input id="dist_target" type="text">m
                     </div>
-                    <div class="box3">
+                    <div class="b3">
                         <label class="t2" for="box_estimation">Estimation</label>
                         <div id="box_estimation">
                             <div>
@@ -208,20 +212,20 @@ input[type=text] {
                 </div>
             </div>
 
-            <div class="box1">
+            <div class="b1">
                 <label class="t2" for="box_path_loss_model_selector">Path Loss Model</label>
-                <div class="box3" id="box_path_loss_model_selector">
+                <div class="b3" id="box_path_loss_model_selector">
                     <div id="box_path_loss_model">
                     </div>
                 </div>
             </div>
 
-            <div class="box1" id="box_chart_params">
+            <div class="b1" id="box_chart_params">
                 <div>
                     <input id="enable_chart_rx_power" type="checkbox">
                     <label class="t2" for="box_chart_params">Rx Power Chart</label>
                 </div>
-                <div class="box3" id="box_chart_distance">
+                <div class="b3" id="box_chart_distance">
                     <label class="t3" for="box_chart_distance">Distance Params.</label>
                     <div>
                         <label for="dist_min">Min. Dist.</label>
@@ -236,7 +240,7 @@ input[type=text] {
                         <input id="dist_interval" type="text">m
                     </div>
                 </div>
-                <div class="box3" id="box_chart_rx_power">
+                <div class="b3" id="box_chart_rx_power">
                     <label class="t3" for="box_chart_rx_power">Rx Power Params.</label>
                     <div>
                         <label for="rx_power_index1">Index</label>
@@ -261,6 +265,55 @@ input[type=text] {
         </div>
 
         <hr>
+
+        <div>
+            (NOT YET)
+            <label for="upload-file">Product List</label>
+            <input id="upload-file" type="file" multiple>
+        </div>
+
+        <div id="base2">
+
+            <div class="b1">
+                <div class="b5">
+                    <div>Tx Device</div>
+                    <select id="prod_tx_device"></select>
+                </div>
+                <div class="b5">
+                    <div>Other</div>
+                    <select id="prod_tx_other"></select>
+                </div>
+                <div class="b5">
+                    <div>Cable</div>
+                    <select id="prod_tx_cable"></select>
+                </div>
+                <div class="b5">
+                    <div>Antenna</div>
+                    <select id="prod_tx_antenna"></select>
+                </div>
+            </div>
+
+            <div class="b5">
+                -- Path Loss --
+            </div>
+
+            <div class="b1">
+                <div class="b5">
+                    <div>Antenna</div>
+                    <select id="prod_rx_antenna"></select>
+                </div>
+                <div class="b5">
+                    <div>Cable</div>
+                    <select id="prod_rx_cable"></select>
+                </div>
+                <div class="b5">
+                    <div>Other</div>
+                    <select id="prod_rx_other"></select>
+                </div>
+            </div>
+        </div>
+
+        <hr>
         <div class="canvas" id="canvas-path-loss"></div>
 
         <hr>
@@ -269,8 +322,10 @@ input[type=text] {
 
         <!--
         <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.23.0/plotly.min.js" charset="utf-8"></script>
+        <script src="https://cdn.rawgit.com/Keyang/node-csvtojson/d41f44aa/browser/csvtojson.min.js"></script>
         -->
         <script src="js/plotly/plotly-2.23.0.min.js" charset="utf-8"></script>
+        <script src="js/csvtojson/browser/csvtojson.min.js"></script>
 
 <script type="text/javascript" defer>
 
@@ -329,7 +384,7 @@ init();
 function set_base_size()
 {
     //let height = `${window.innerHeight*.98}px`;
-    document.getElementById('base').style.setProperty('width',
+    document.getElementById('base1').style.setProperty('width',
         `${window.innerWidth*.98}px`);
 
     // set canvas width
@@ -415,7 +470,7 @@ function init_path_loss_models()
     n.appendChild(document.createTextNode('PL(*1)'));
     n.classList.add('th_plm');
     n.classList.add('path_loss_use');
-    n.classList.add('text-center');
+    n.classList.add('t-center');
     row.insertCell(-1).appendChild(n);
     // td 2: for chart.
     n = document.createElement('span');
@@ -438,7 +493,7 @@ function init_path_loss_models()
         n.checked = x.label == 'fixed' ? true : false;
         c = row.insertCell(-1);
         c.classList.add('path_loss_use');
-        c.classList.add('text-center');
+        c.classList.add('t-center');
         c.appendChild(n);
         // td 2: for chart.
         n = document.createElement('input');
@@ -446,7 +501,7 @@ function init_path_loss_models()
         n.type = 'checkbox';
         n.checked = x.label == 'fixed' ? false : true;
         c = row.insertCell(-1);
-        c.classList.add('text-center');
+        c.classList.add('t-center');
         c.appendChild(n);
     });
 
@@ -466,6 +521,8 @@ function init()
     redraw();
 
     window.addEventListener('resize', ev_resize);
+    document.getElementById("upload-file")
+        .addEventListener("change", load_files);
 }
 
 function get_rf_params()
@@ -811,7 +868,6 @@ function draw_rx_power()
         height: 600,
     };
 
-    // XXX how to react ??
     Plotly.newPlot(canvas1, lines, layout)
         .catch(function(e){console.log('err2:', e)});
 }
@@ -871,6 +927,165 @@ function redraw()
         document.getElementById('box_chart_distance').style.display = 'none';
         document.getElementById('box_chart_rx_power').style.display = 'none';
         Plotly.purge(canvas1);
+    }
+}
+
+/*
+Product Data in CSV
+
+    pdb = {
+        'device': [
+            {
+                'id': seq,
+                'prod': <ProductName>,
+                'value': <Value>,
+                'freq_low': <Value>,
+                'freq_high': <Value>,
+            }, ...
+        ],
+        'annena': [ ...  ],
+        'cable': [ ...  ],
+        'other': [ ...  ]
+    }
+
+*/
+
+var pdb = {};
+
+function load_files()
+{
+    pdb = {
+        'device': [],
+        'antenna': [],
+        'cable': [],
+        'other': [],
+    };
+
+    // set nb_files.
+    let nb_files = this.files.length;
+    put_info1(`Reading ${nb_files}`);
+
+    // dealing with all files.
+    for (let i = 0; i < this.files.length; i++) {
+        this.files[i].text().then(csv_file => {
+            // console.log('csv_file:', csv_file);
+            let v = csv_file.split(/\r?\n/,1)[0].split(',');
+            let lines = csv_file.split(/\r?\n/);
+            // check the version.
+            v = lines.shift().split(',');
+console.log('version:', v);
+            if (v[0] == 'FormatVersion' && v[1] == '0.1a') {
+                put_info2(`WARNING: invalid file format. ${v[0]}`);
+            }
+            // parse the file as CSV.
+            const plot_data = csv()
+            .fromString(lines.join('\n'))
+            .then(input_data => {
+                let seq = 1;
+                input_data.forEach(x => {
+                    let v = {
+                        'prod': x.ProdName,
+                        'value': parseFloat(x.V),
+                        'freq_low': parseFloat(x.FreqL),
+                        'freq_high': parseFloat(x.FreqH),
+                        'region': x.R,
+                        'seq': seq++,
+                    };
+                    switch (x.ProdType) {
+                    case 'D':
+                        pdb.device.push(v);
+                        break;
+                    case 'A':
+                        pdb.antenna.push(v);
+                        break;
+                    case 'C':
+                        pdb.cable.push(v);
+                        break;
+                    case 'O':
+                        pdb.other.push(v);
+                        break;
+                    default:
+                        put_info2(`ERROR: invalid data. ${x}`);
+                    }
+                });
+                nb_files -= 1;
+                put_info1(`Reading ${nb_files}`);
+                if (nb_files == 0) {
+                    put_info1('Done.');
+                }
+            });
+        });
+    }
+
+    // check if all files are loaded.
+    window.setTimeout(check_promise, 1000);
+    function check_promise() {
+        if (nb_files > 0) {
+            // if not, set timeout again.
+            window.setTimeout(check_promise, 1000);
+        } else {
+            // if all promises are done, finish it.
+            post_load_files();
+            return;
+        }
+    }
+
+    function post_load_files() {
+console.log('pdb:', pdb);
+        // creating the selectors.
+        const dispatch_table = [
+            {
+                'element': 'prod_tx_device',
+                'pdb_list': pdb.device,
+            },
+            {
+                'element': 'prod_tx_other',
+                'pdb_list': pdb.other,
+            },
+            {
+                'element': 'prod_tx_cable',
+                'pdb_list': pdb.cable,
+            },
+            {
+                'element': 'prod_tx_antenna',
+                'pdb_list': pdb.antenna,
+            },
+            {
+                'element': 'prod_rx_antenna',
+                'pdb_list': pdb.antenna,
+            },
+            {
+                'element': 'prod_rx_cable',
+                'pdb_list': pdb.cable,
+            },
+            {
+                'element': 'prod_rx_other',
+                'pdb_list': pdb.other,
+            },
+        ];
+        dispatch_table.forEach(dp => {
+            // initialize the selector everytime.
+            let sel = document.getElementById(dp.element);
+            while (sel.options.length > 0) {
+                sel.remove(0);
+            }
+            // initialize the options of each select.
+            if (dp.pdb_list !== undefined) {
+                function addopt(obj) {
+                    let no = document.createElement('option');
+                    let name = Object.values(obj).join(',');
+                    no.appendChild(document.createTextNode(name));
+                    if (Object.keys(obj).length != 0) {
+                        no.setAttribute('value', JSON.stringify(obj.seq));
+                    }
+                    sel.appendChild(no);
+                }
+                addopt({});
+                dp.pdb_list.sort().forEach(x => {
+                    addopt(x);
+                });
+            }
+        });
     }
 }
 
