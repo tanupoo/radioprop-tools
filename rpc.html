@@ -45,6 +45,7 @@ input[type=text] {
 .b3 {
     width: 314px;
     margin: 4px;
+    padding-top: 4px;
     border-top: 1px solid #5b616b;
 }
 .b5 {
@@ -184,8 +185,13 @@ input[type=text] {
             <div class="b1">
                 <div class="b2">
                     <div class="b3t">
-                        <label for="dist_target">Distance</label>
-                        <input id="dist_target" type="text">m
+                        <label class="t2" for="box_distance">Distance</label>
+                        <div id="box_distance">
+                            <div>
+                                <label for="dist_target">Index</label>
+                                <input id="dist_target" type="text">m
+                            </div>
+                        </div>
                     </div>
                     <div class="b3">
                         <label class="t2" for="box_estimation">Estimation</label>
