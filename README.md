@@ -42,3 +42,24 @@ You can check it at: https://bit.ly/45ov7em
 13|ACC-LA-H-NM-NF    |           |    O     |       |       | .5  |      |
 ```
 
+## References
+
+- [Free-space path loss](https://en.wikipedia.org/wiki/Free-space_path_loss)
+- Okumura-Hata model
+    + [1] https://en.wikipedia.org/wiki/Hata_model
+    + [2] https://www.cdt21.com/technical_tools/okumura-hata-curve/
+    + [3] https://www.gaussianwaves.com/2019/03/hata-okumura-model-for-outdoor-propagation/
+
+the formulars in each reference are slightly different.
+Need to check the original paper.
+For example,
+The frequency boundary for a large city is 200 in [1],[3], but 400 in [2].
+The last value of the formula is 40.94 in [1],[2], but 40.98 in [3].
+The valid communication range is [1km, 20km] in [2],[3], but [1km, 10km] in [1].
+
+- [Walfisch-Ikegami Model](http://www.lx.it.pt/cost231/final_report.htm)
+
+Not yet implemented.
+
+- [Path Loss Models for Urban Macro Cell Scenario at 3.35, 4.9 and 5.4 GHz](http://www.zjhlab.net/papers/2015/CP1544hz.pdf)
+
