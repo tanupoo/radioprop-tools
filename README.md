@@ -57,9 +57,3 @@ The frequency boundary for a large city is 200 in [1],[3], but 400 in [2].
 The last value of the formula is 40.94 in [1],[2], but 40.98 in [3].
 The valid communication range is [1km, 20km] in [2],[3], but [1km, 10km] in [1].
 
-- [Walfisch-Ikegami Model](http://www.lx.it.pt/cost231/final_report.htm)
-
-Not yet implemented.
-
-- [Path Loss Models for Urban Macro Cell Scenario at 3.35, 4.9 and 5.4 GHz](http://www.zjhlab.net/papers/2015/CP1544hz.pdf)
-
