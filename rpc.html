@@ -117,66 +117,66 @@ input[type=text] {
                     <label class="t2" for="box_tx_params">Tx Parameters</label>
                     <div>
                         <label for="freq">Frequency</label>
-                        <input id="freq" type="text">MHz
+                        <input id="freq" class="rfp" type="text">MHz
                     </div>
                     <div>
                         <label for="box_tx_power">Power</label>
                         <span id="box_tx_power">
                             <span>
-                                <input id="tx_power_dbm" type="text" oninput="ev_dbm_to_mw(this)">dBm
+                                <input id="tx_power_dbm" class="rfp" type="text">dBm
                             </span>
                             <span> &DoubleLeftRightArrow; </span>
                             <span>
-                                <input id="tx_power_mw" type="text" oninput="ev_mw_to_dbm(this)">mW
+                                <input id="tx_power_mw" class="rfp" type="text" >mW
                             </span>
                         </span>
                     </div>
                     <div>
                         <label for="tx_ant_gain">Antenna Gain</label>
-                        <input id="tx_ant_gain" type="text">dBi
+                        <input id="tx_ant_gain" class="rfp" type="text">dBi
                     </div>
                     <div>
                         <label for="tx_cable_loss">Cable Loss</label>
-                        <input id="tx_cable_loss" type="text">dB
+                        <input id="tx_cable_loss" class="rfp" type="text">dB
                     </div>
                     <div>
-                        <label for="tx_misc_loss">Misc. Loss</label>
-                        <input id="tx_misc_loss" type="text">dB
+                        <label for="tx_other_loss">Other. Loss</label>
+                        <input id="tx_other_loss" class="rfp" type="text">dB
                     </div>
                     <div>
                         <label for="tx_ant_height">Height</label>
-                        <input id="tx_ant_height" type="text">m
+                        <input id="tx_ant_height" class="rfp" type="text">m
                     </div>
                 </div>
                 <div class="b3">
                     <div id="box_fixed_path_loss">
                         <label for="fixed_path_loss">Path Loss</label>
-                        <input id="fixed_path_loss" type="text">dB
+                        <input id="fixed_path_loss" class="rfp" type="text">dB
                         (<span class="t4">See *1</label>)
                     </div>
                     <div>
                         <label for="misc_loss">Misc. Loss</label>
-                        <input id="misc_loss" type="text">dB
+                        <input id="misc_loss" class="rfp" type="text">dB
                     </div>
                 </div>
                 <div class="b3">
-                    <label class="t2" for="box_rx_params">Rx Parameters</label>
+                    <label class="t2" class="rfp" for="box_rx_params">Rx Parameters</label>
                     <div id="box_rx_params">
                         <div>
                             <label for="rx_ant_gain">Antenna Gain</label>
-                            <input id="rx_ant_gain" type="text">dBi
+                            <input id="rx_ant_gain" class="rfp" type="text">dBi
                         </div>
                         <div>
                             <label for="rx_cable_loss">Cable Loss</label>
-                            <input id="rx_cable_loss" type="text">dB
+                            <input id="rx_cable_loss" class="rfp" type="text">dB
                         </div>
                         <div>
-                            <label for="rx_misc_loss">Misc. Loss</label>
-                            <input id="rx_misc_loss" type="text">dB
+                            <label for="rx_other_loss">Other. Loss</label>
+                            <input id="rx_other_loss" class="rfp" type="text">dB
                         </div>
                         <div>
                             <label for="rx_ant_height">Height</label>
-                            <input id="rx_ant_height" type="text">m
+                            <input id="rx_ant_height" class="rfp" type="text">m
                         </div>
                     </div>
                 </div>
@@ -189,7 +189,7 @@ input[type=text] {
                         <div id="box_distance">
                             <div>
                                 <label for="dist_target">Index</label>
-                                <input id="dist_target" type="text">m
+                                <input id="dist_target" class="rfp" type="text">m
                             </div>
                         </div>
                     </div>
@@ -228,7 +228,7 @@ input[type=text] {
 
             <div class="b1">
                 <div>
-                    <input id="enable_chart_rx_power" type="checkbox">
+                    <input id="enable_rx_power_chart" type="checkbox">
                     <label class="t2" for="box_chart_params">Rx Power Chart</label>
                 </div>
                 <div class="b2" id="box_chart_params">
@@ -236,34 +236,34 @@ input[type=text] {
                         <label class="t3" for="box_chart_distance">Distance Params.</label>
                         <div>
                             <label for="dist_min">Min. Dist.</label>
-                            <input id="dist_min" type="text">m
+                            <input id="dist_min" class="rcp" type="text">m
                         </div>
                         <div>
                             <label for="dist_max">Max. Dist.</label>
-                            <input id="dist_max" type="text">m
+                            <input id="dist_max" class="rcp" type="text">m
                         </div>
                         <div>
                             <label for="dist_interval">Dist. Inerval</label>
-                            <input id="dist_interval" type="text">m
+                            <input id="dist_interval" class="rcp" type="text">m
                         </div>
                     </div>
                     <div class="b3" id="box_chart_rx_power">
                         <label class="t3" for="box_chart_rx_power">Rx Power Params.</label>
                         <div>
                             <label for="rx_power_index1">Index</label>
-                            <input id="rx_power_index1" type="text">dBm
+                            <input id="rx_power_index1" class="rcp" type="text">dBm
                         </div>
                         <div>
                             <label for="rx_power_high">Power High</label>
-                            <input id="rx_power_high" type="text">dBm
+                            <input id="rx_power_high" class="rcp" type="text">dBm
                         </div>
                         <div>
                             <label for="rx_power_low">Power Low</label>
-                            <input id="rx_power_low" type="text">dBm
+                            <input id="rx_power_low" class="rcp" type="text">dBm
                         </div>
                         <div>
                             <label for="rx_power_step">Power Step</label>
-                            <input id="rx_power_step" type="text">dBm
+                            <input id="rx_power_step" class="rcp" type="text">dBm
                         </div>
                     </div>
                 </div>
@@ -289,19 +289,19 @@ input[type=text] {
             <div class="b1">
                 <div class="b5">
                     <div>Tx Device</div>
-                    <select id="prod_tx_device"></select>
+                    <select id="prod_tx_device" class="plp"></select>
                 </div>
                 <div class="b5">
                     <div>Other</div>
-                    <select id="prod_tx_other"></select>
+                    <select id="prod_tx_other" class="plp"></select>
                 </div>
                 <div class="b5">
                     <div>Cable</div>
-                    <select id="prod_tx_cable"></select>
+                    <select id="prod_tx_cable" class="plp"></select>
                 </div>
                 <div class="b5">
                     <div>Antenna</div>
-                    <select id="prod_tx_antenna"></select>
+                    <select id="prod_tx_antenna" class="plp"></select>
                 </div>
             </div>
 
@@ -312,15 +312,15 @@ input[type=text] {
             <div class="b1">
                 <div class="b5">
                     <div>Antenna</div>
-                    <select id="prod_rx_antenna"></select>
+                    <select id="prod_rx_antenna" class="plp"></select>
                 </div>
                 <div class="b5">
                     <div>Cable</div>
-                    <select id="prod_rx_cable"></select>
+                    <select id="prod_rx_cable" class="plp"></select>
                 </div>
                 <div class="b5">
                     <div>Other</div>
-                    <select id="prod_rx_other"></select>
+                    <select id="prod_rx_other" class="plp"></select>
                 </div>
             </div>
         </div>
@@ -351,12 +351,12 @@ const default_rf_params = {
     'tx_cable_loss': 0,
     'tx_ant_gain': 5,
     'tx_ant_height': 10,
-    'tx_misc_loss': 0,
+    'tx_other_loss': 0,
     'misc_loss': 0,
     'rx_cable_loss': 0,
     'rx_ant_gain': 5,
     'rx_ant_height': 1,
-    'rx_misc_loss': 0,
+    'rx_other_loss': 0,
     'fixed_path_loss': 50,
     'dist_target': 800,
     'dist_min': 1,
@@ -387,10 +387,21 @@ const info1 = document.getElementById('info1');
 const info2 = document.getElementById('info2');
 
 /*
-init() -> redraw()
-ev_resize() -> set_base_size() -> redraw()
-ev_rfp_change() -> redraw()
+ *  ev_resize() -> set_base_size() -> draw_rx_power()
+ *  ev_rfp_change() -> set_rf_estimation() -> draw_rx_power()
+ *  ev_rcp_change() -> draw_rx_power()
+ *  ev_plp_change() -> set_rf_estimation() -> draw_rx_power()
+ *  init() ->
+      ev_dbm_to_mw()
+      set_rf_estimation()
+      ev_resize()
+      ev_enable_product_list()
+ *
+ *  rfp: RF Parameters
+ *  rcp: Rx power Chart Parameters
+ *  plp: Product List Paramters
 */
+
 init();
 
 function set_base_size()
@@ -451,22 +462,82 @@ function ev_mw_to_dbm(e)
     document.getElementById('tx_power_dbm').value = get_mw_to_dbm(mw);
 }
 
-function ev_rfp_change()
+function ev_rfp_change(e)
 {
-    redraw();
+    if (e !== undefined) {
+        if (e.target.id == 'tx_power_dbm') {
+            ev_dbm_to_mw();
+        } else if (e.target.id == 'tx_power_mw') {
+            ev_mw_to_dbm();
+        }
+    }
+    set_rf_estimation();
+    draw_rx_power();
+}
+
+function ev_enable_rx_power_chart()
+{
+    draw_rx_power();
+}
+
+function ev_rcp_change()
+{
+    draw_rx_power();
+}
+
+function ev_enable_product_list()
+{
+    // display box_upload_file or not
+    if (document.getElementById('enable_product_list').checked === true) {
+        document.getElementById('box_product_list').style.display = 'flex';
+        document.getElementById('upload_product_list').style.display = 'block';
+    } else {
+        document.getElementById('box_product_list').style.display = 'none';
+        document.getElementById('upload_product_list').style.display = 'none';
+    }
+}
+
+function ev_plp_change(ev)
+{
+    function get_pdb_item(id)
+    {
+        let db = Object.values(pdb);
+        for (let i = 0; i < db.length; i++) {
+            for (let j = 0; j < db[i].length; j++) {
+                if (db[i][j].id == id) {
+                    return db[i][j];
+                }
+            }
+        }
+console.log(`ERROR: not found ${id} in pdb`);
+console.log(pdb);
+        return undefined;
+    }
+    let e = ev.target;
+    let m = pdb_map;
+    if (e.value == '0') {
+        document.getElementById(m[i].dst).value = 0;
+    } else {
+        for (let i = 0; i < m.length; i++) {
+            if (m[i].src == e.id) {
+                document.getElementById(m[i].dst).value = get_pdb_item(e.value).value;
+                break;
+            }
+        }
+    }
+    set_rf_estimation();
+    draw_rx_power();
 }
 
 function ev_resize()
 {
     set_base_size();
-    redraw();
+    draw_rx_power();
 }
 
 function init_path_loss_models()
 {
-    /*
-    make the below table for the path loss models.
-   */
+    /* make the table of the path loss models. */
     let table = document.createElement('table');
     table.id = 'table_path_loss_model';
     let row, n, c;
@@ -502,6 +573,7 @@ function init_path_loss_models()
         n.id = `pl_use_${x.label}`;
         n.type = 'radio';
         n.name = 'pl_model_use';
+        n.classList.add('rfp');
         n.x__model = x;
         n.checked = x.label == 'fixed' ? true : false;
         c = row.insertCell(-1);
@@ -512,6 +584,7 @@ function init_path_loss_models()
         n = document.createElement('input');
         n.id = `pl_chart_${x.label}`;
         n.type = 'checkbox';
+        n.classList.add('rcp');
         n.checked = x.label == 'fixed' ? false : true;
         c = row.insertCell(-1);
         c.classList.add('t-center');
@@ -531,13 +604,26 @@ function init()
         document.getElementById(k).value = v;
         });
     ev_dbm_to_mw();
-    redraw();
+    set_rf_estimation();
+    ev_resize();
+    ev_enable_product_list();
 
     window.addEventListener('resize', ev_resize);
+    document.getElementById('enable_rx_power_chart')
+        .addEventListener('change', ev_enable_rx_power_chart);
+    document.getElementById('enable_product_list')
+        .addEventListener('change', ev_enable_product_list);
     document.getElementById("upload_product_list")
-        .addEventListener("change", load_files);
-    Array.from(document.getElementsByTagName('input')).forEach(e => {
+        .addEventListener("change", ev_load_product_list_files);
+
+    Array.from(document.getElementsByClassName('rfp')).forEach(e => {
         e.addEventListener('input', ev_rfp_change);
+    });
+    Array.from(document.getElementsByClassName('rcp')).forEach(e => {
+        e.addEventListener('input', ev_rcp_change);
+    });
+    Array.from(document.getElementsByClassName('plp')).forEach(e => {
+        e.addEventListener('input', ev_plp_change);
     });
 }
 
@@ -719,14 +805,14 @@ function get_tx_erip(params)
 {
     /* return: dBi */
     let p = params;
-    return p.tx_power_dbm - p.tx_cable_loss - p.tx_misc_loss + p.tx_ant_gain;
+    return p.tx_power_dbm - p.tx_cable_loss - p.tx_other_loss + p.tx_ant_gain;
 }
 
 function get_rx_power(model, params, distance)
 {
     let p = params;
     let PL = model.get_path_loss(p, distance);
-    let rxp = get_tx_erip(params) - PL + p.rx_ant_gain - p.rx_misc_loss - p.rx_cable_loss;
+    let rxp = get_tx_erip(params) - PL + p.rx_ant_gain - p.rx_other_loss - p.rx_cable_loss;
     return round_base(rxp);
 }
 
@@ -764,6 +850,14 @@ function get_fresnel_zone_r1()
 
 function draw_rx_power()
 {
+    // display box_chart_params or not
+    if (document.getElementById('enable_rx_power_chart').checked === false) {
+        document.getElementById('box_chart_params').style.display = 'none';
+        Plotly.purge(canvas1);
+        return;
+    }
+    document.getElementById('box_chart_params').style.display = 'block';
+
     let p = get_rf_params();
     let lines = [];
 
@@ -921,7 +1015,7 @@ function set_rf_estimation()
     }
 
     let erip = get_tx_erip(params);
-    document.getElementById('tx_erip_dbi').innerText = erip;
+    document.getElementById('tx_erip_dbi').innerText = round_base(erip);
     document.getElementById('tx_erip_mw').innerText = get_dbm_to_mw(erip);
 
     let rxp = get_rx_power(model, params, params.dist_target);
@@ -930,27 +1024,6 @@ function set_rf_estimation()
     let fr1 = get_fresnel_zone_r1();
     document.getElementById('rx_fresnel_r1').innerText = fr1;
     document.getElementById('rx_fresnel_r1_60').value = round_base(fr1*0.6);
-}
-
-function redraw()
-{
-    set_rf_estimation();
-    // display box_chart_params or not
-    if (document.getElementById('enable_chart_rx_power').checked === true) {
-        document.getElementById('box_chart_params').style.display = 'block';
-        draw_rx_power();
-    } else {
-        document.getElementById('box_chart_params').style.display = 'none';
-        Plotly.purge(canvas1);
-    }
-    // display box_upload_file or not
-    if (document.getElementById('enable_product_list').checked === true) {
-        document.getElementById('box_product_list').style.display = 'flex';
-        document.getElementById('upload_product_list').style.display = 'block';
-    } else {
-        document.getElementById('box_product_list').style.display = 'none';
-        document.getElementById('upload_product_list').style.display = 'none';
-    }
 }
 
 /*
@@ -975,7 +1048,52 @@ Product Data in CSV
 
 var pdb = {};
 
-function load_files()
+const pdb_map = [
+    {
+        'src': 'prod_tx_device',
+        'dst': 'tx_power_dbm',
+        'type': 'device',
+        'unit': 'dBm',
+    },
+    {
+        'src': 'prod_tx_other',
+        'dst': 'tx_other_loss',
+        'type': 'other',
+        'unit': 'dB',
+    },
+    {
+        'src': 'prod_tx_cable',
+        'dst': 'tx_cable_loss',
+        'type': 'cable',
+        'unit': 'dB',
+    },
+    {
+        'src': 'prod_tx_antenna',
+        'dst': 'tx_ant_gain',
+        'type': 'antenna',
+        'unit': 'dBi',
+    },
+    {
+        'src': 'prod_rx_antenna',
+        'dst': 'rx_ant_gain',
+        'type': 'antenna',
+        'unit': 'dBi',
+    },
+    {
+        'src': 'prod_rx_cable',
+        'dst': 'rx_cable_loss',
+        'type': 'cable',
+        'unit': 'dB',
+    },
+    {
+        'src': 'prod_rx_other',
+        'dst': 'rx_other_loss',
+        'type': 'other',
+        'unit': 'dB',
+    },
+];
+
+function ev_load_product_list_files(e)
 {
     pdb = {
         'device': [],
@@ -983,14 +1101,15 @@ function load_files()
         'cable': [],
         'other': [],
     };
+    let files = e.target.files;
 
     // set nb_files.
-    let nb_files = this.files.length;
+    let nb_files = files.length;
     put_info1(`Reading ${nb_files}`);
 
     // dealing with all files.
-    for (let i = 0; i < this.files.length; i++) {
-        this.files[i].text().then(csv_file => {
+    for (let i = 0; i < files.length; i++) {
+        files[i].text().then(csv_file => {
             // console.log('csv_file:', csv_file);
             let v = csv_file.split(/\r?\n/,1)[0].split(',');
             let lines = csv_file.split(/\r?\n/);
@@ -1012,7 +1131,7 @@ function load_files()
                         'freq_low': parseFloat(x.FreqL),
                         'freq_high': parseFloat(x.FreqH),
                         'region': x.R,
-                        'seq': seq++,
+                        'id': seq++,
                     };
                     switch (x.ProdType) {
                     case 'D':
@@ -1056,64 +1175,39 @@ function load_files()
     function post_load_files() {
 //console.log('pdb:', pdb);
         // creating the selectors.
-        const dispatch_table = [
-            {
-                'element': 'prod_tx_device',
-                'pdb_list': pdb.device,
-                'unit': 'dBm',
-            },
-            {
-                'element': 'prod_tx_other',
-                'pdb_list': pdb.other,
-                'unit': 'dB',
-            },
-            {
-                'element': 'prod_tx_cable',
-                'pdb_list': pdb.cable,
-                'unit': 'dB',
-            },
-            {
-                'element': 'prod_tx_antenna',
-                'pdb_list': pdb.antenna,
-                'unit': 'dBi',
-            },
-            {
-                'element': 'prod_rx_antenna',
-                'pdb_list': pdb.antenna,
-                'unit': 'dBi',
-            },
-            {
-                'element': 'prod_rx_cable',
-                'pdb_list': pdb.cable,
-                'unit': 'dB',
-            },
-            {
-                'element': 'prod_rx_other',
-                'pdb_list': pdb.other,
-                'unit': 'dB',
-            },
-        ];
-        dispatch_table.forEach(dp => {
+        pdb_map.forEach(m => {
             // initialize the selector everytime.
-            let sel = document.getElementById(dp.element);
+            let sel = document.getElementById(m.src);
             while (sel.options.length > 0) {
                 sel.remove(0);
             }
             // initialize the options of each select.
-            if (dp.pdb_list !== undefined) {
+            if (pdb[m.type] !== undefined) {
                 function addopt(a) {
-                    let no = document.createElement('option');
-                    if (Object.keys(a).length != 0) {
-                        let name = `${a.prod} ${a.value}${dp.unit} [${a.freq_low}, ${a.freq_high}] ${a.region}`;
-                        no.appendChild(document.createTextNode(name));
-                        no.setAttribute('value', JSON.stringify(a.seq));
-                    } else {
-                        no.appendChild(document.createTextNode(''));
+                    function get_freq(fl0, fh0) {
+                        if (isNaN(fl0) && isNaN(fh0)) {
+                            return '';
+                        }
+                        let fl = isNaN(fl0) ? '' : fl0;
+                        let fh = isNaN(fh0) ? '' : fh0;
+                        return ` [${fl}, ${fh}]MHz`;
                     }
-                    sel.appendChild(no);
+                    function get_region(rg) {
+                        return isNaN(rg) ? '' : rg;
+                    }
+                    let n = document.createElement('option');
+                    if (Object.keys(a).length != 0) {
+                        let name = `${a.prod}${get_freq(a.freq_low,a.freq_high)}${get_region(a.region)} ${a.value}${m.unit}`;
+                        n.appendChild(document.createTextNode(name));
+                        n.setAttribute('value', JSON.stringify(a.id));
+                    } else {
+                        n.appendChild(document.createTextNode(''));
+                        n.setAttribute('value', JSON.stringify(0));
+                    }
+                    sel.appendChild(n);
                 }
                 addopt({});
-                dp.pdb_list.sort().forEach(x => {
+                pdb[m.type].sort().forEach(x => {
                     addopt(x);
                 });
             }
