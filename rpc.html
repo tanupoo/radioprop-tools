@@ -391,11 +391,7 @@ const info2 = document.getElementById('info2');
  *  ev_rfp_change() -> set_rf_estimation() -> draw_rx_power()
  *  ev_rcp_change() -> draw_rx_power()
  *  ev_plp_change() -> set_rf_estimation() -> draw_rx_power()
- *  init() ->
-      ev_dbm_to_mw()
-      set_rf_estimation()
-      ev_resize()
-      ev_enable_product_list()
+ *  init() -> set_base_size() -> ev_rfp_change() -> ev_enable_product_list()
  *
  *  rfp: RF Parameters
  *  rcp: Rx power Chart Parameters
@@ -450,25 +446,15 @@ function get_mw_to_dbm(mw)
     return round_base(dbm);
 }
 
-function ev_dbm_to_mw()
+function ev_rfp_change(ev)
 {
-    let dbm = parseFloat(document.getElementById('tx_power_dbm').value);
-    document.getElementById('tx_power_mw').value = get_dbm_to_mw(dbm);
-}
-
-function ev_mw_to_dbm(e)
-{
-    let mw = parseFloat(document.getElementById('tx_power_mw').value);
-    document.getElementById('tx_power_dbm').value = get_mw_to_dbm(mw);
-}
-
-function ev_rfp_change(e)
-{
-    if (e !== undefined) {
-        if (e.target.id == 'tx_power_dbm') {
-            ev_dbm_to_mw();
-        } else if (e.target.id == 'tx_power_mw') {
-            ev_mw_to_dbm();
+    if (ev !== undefined) {
+        if (ev.target.id == 'tx_power_dbm') {
+            let dbm = parseFloat(document.getElementById('tx_power_dbm').value);
+            document.getElementById('tx_power_mw').value = get_dbm_to_mw(dbm);
+        } else if (ev.target.id == 'tx_power_mw') {
+            let mw = parseFloat(document.getElementById('tx_power_mw').value);
+            document.getElementById('tx_power_dbm').value = get_mw_to_dbm(mw);
         }
     }
     set_rf_estimation();
@@ -603,9 +589,7 @@ function init()
     Object.entries(default_rf_params).forEach(([k,v]) => {
         document.getElementById(k).value = v;
         });
-    ev_dbm_to_mw();
-    set_rf_estimation();
-    ev_resize();
+    ev_rfp_change();
     ev_enable_product_list();
 
     window.addEventListener('resize', ev_resize);
@@ -722,7 +706,7 @@ function get_pl_hata(env_type, params, distance)
     let hM = p.rx_ant_height;
     let log10 = Math.log10
 
-    const info_suffix = ' for HATA model. (circuitdesign)';
+    const info_suffix = ' for HATA model.';
     put_info2('The valid distance of HATA model is longer than 1000(m).');
 
     if (f < 150 || f > 1500) {
@@ -979,7 +963,7 @@ function draw_rx_power()
     };
 
     Plotly.newPlot(canvas1, lines, layout)
-        .catch(function(e){console.log('err2:', e)});
+        .catch(function(err){console.log('err2:', err)});
 }
 
 function set_rf_estimation()
@@ -1093,7 +1077,7 @@ const pdb_map = [
     },
 ];
 
-function ev_load_product_list_files(e)
+function ev_load_product_list_files(ev)
 {
     pdb = {
         'device': [],
@@ -1101,7 +1085,7 @@ function ev_load_product_list_files(e)
         'cable': [],
         'other': [],
     };
-    let files = e.target.files;
+    let files = ev.target.files;
 
     // set nb_files.
     let nb_files = files.length;
