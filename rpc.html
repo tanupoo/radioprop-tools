@@ -384,6 +384,7 @@ const path_loss_models = [
     new pl_model_hata_suburb(),
     new pl_model_hata_urban(),
     new pl_model_hata_urban_large(),
+    new pl_model_wi_los(),
     new pl_model_fixed(),
     ];
 
@@ -661,22 +662,6 @@ function pl_model_freespace()
     };
 }
 
-/*
-Okumura-Hata model
-[1] https://en.wikipedia.org/wiki/Hata_model
-[2] https://www.cdt21.com/technical_tools/okumura-hata-curve/
-[3] https://www.gaussianwaves.com/2019/03/hata-okumura-model-for-outdoor-propagation/
-
-Note:
-
-the formulars in each reference are slightly different.
-Need to check the original paper.
-For example,
-The frequency boundary for a large city is 200 in [1],[3], but 400 in [2].
-The last value of the formula is 40.94 in [1],[2], but 40.98 in [3].
-The valid communication range is [1km, 20km] in [2],[3], but [1km, 10km] in [1].
-*/
-
 function get_pl_hata(env_type, params, distance)
 {
     /*
@@ -792,6 +777,33 @@ function pl_model_hata_urban_large()
     this.label = 'hata_large_city';
     this.get_path_loss = function(p, d) {
         return get_pl_hata('urban-large', p, d);
+    };
+}
+
+function pl_model_wi_los()
+{
+    /*
+    Walfisch-Ikegami Model: Full line of sight.
+
+    Lb = 42.6 + 26*log10(d) + 20*log10(f)
+
+    Lb(dB)
+    d(m): >= 20
+    f(MHz): 
+
+    f: frequency (MHz): [800, 2000]
+    d: distance (m): [20, 5000]
+    hB: Ant height of Base station (m): [4, 50]
+    hM: Ant height of Mobile device (m): [1, 3]
+     */
+    this.model_name = 'W-I LOS';
+    this.label = 'wi_los';
+
+    this.get_path_loss = function(p, d0) {
+        let d = d0/1000;
+        let f = p.freq;
+        let log10 = Math.log10
+        return 42.6 + 26*log10(d) + 20*log10(f);
     };
 }
 
