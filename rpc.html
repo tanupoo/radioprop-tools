@@ -84,7 +84,7 @@ input[type=text] {
     background-color: #e7f4e4;
 }
 
-#base1, #base2 {
+.flex-box {
     display: flex;
     flex-wrap: wrap;
 }
@@ -110,7 +110,7 @@ input[type=text] {
 
         <div id="title">Rx Power Calculator</div>
 
-        <div id="base1" oninput="ev_change_rf_params()">
+        <div class="flex-box">
 
             <div class="b1">
                 <div class="b3t">
@@ -226,59 +226,65 @@ input[type=text] {
                 </div>
             </div>
 
-            <div class="b1" id="box_chart_params">
+            <div class="b1">
                 <div>
                     <input id="enable_chart_rx_power" type="checkbox">
                     <label class="t2" for="box_chart_params">Rx Power Chart</label>
                 </div>
-                <div class="b3" id="box_chart_distance">
-                    <label class="t3" for="box_chart_distance">Distance Params.</label>
-                    <div>
-                        <label for="dist_min">Min. Dist.</label>
-                        <input id="dist_min" type="text">m
+                <div class="b2" id="box_chart_params">
+                    <div class="b3" id="box_chart_distance">
+                        <label class="t3" for="box_chart_distance">Distance Params.</label>
+                        <div>
+                            <label for="dist_min">Min. Dist.</label>
+                            <input id="dist_min" type="text">m
+                        </div>
+                        <div>
+                            <label for="dist_max">Max. Dist.</label>
+                            <input id="dist_max" type="text">m
+                        </div>
+                        <div>
+                            <label for="dist_interval">Dist. Inerval</label>
+                            <input id="dist_interval" type="text">m
+                        </div>
                     </div>
-                    <div>
-                        <label for="dist_max">Max. Dist.</label>
-                        <input id="dist_max" type="text">m
-                    </div>
-                    <div>
-                        <label for="dist_interval">Dist. Inerval</label>
-                        <input id="dist_interval" type="text">m
+                    <div class="b3" id="box_chart_rx_power">
+                        <label class="t3" for="box_chart_rx_power">Rx Power Params.</label>
+                        <div>
+                            <label for="rx_power_index1">Index</label>
+                            <input id="rx_power_index1" type="text">dBm
+                        </div>
+                        <div>
+                            <label for="rx_power_high">Power High</label>
+                            <input id="rx_power_high" type="text">dBm
+                        </div>
+                        <div>
+                            <label for="rx_power_low">Power Low</label>
+                            <input id="rx_power_low" type="text">dBm
+                        </div>
+                        <div>
+                            <label for="rx_power_step">Power Step</label>
+                            <input id="rx_power_step" type="text">dBm
+                        </div>
                     </div>
                 </div>
-                <div class="b3" id="box_chart_rx_power">
-                    <label class="t3" for="box_chart_rx_power">Rx Power Params.</label>
-                    <div>
-                        <label for="rx_power_index1">Index</label>
-                        <input id="rx_power_index1" type="text">dBm
-                    </div>
-                    <div>
-                        <label for="rx_power_high">Power High</label>
-                        <input id="rx_power_high" type="text">dBm
-                    </div>
-                    <div>
-                        <label for="rx_power_low">Power Low</label>
-                        <input id="rx_power_low" type="text">dBm
-                    </div>
-                    <div>
-                        <label for="rx_power_step">Power Step</label>
-                        <input id="rx_power_step" type="text">dBm
-                    </div>
-                </div>
-            </div>
             </div>
 
         </div>
 
         <hr>
 
-        <div>
-            (NOT YET)
-            <label for="upload-file">Product List</label>
-            <input id="upload-file" type="file" multiple>
+        <div class="flex-box">
+            <div>
+                <input id="enable_product_list" type="checkbox">
+                (NOT YET)
+                <label class="t2" for="enable_product_list">Product List</label>
+                <span id="upload_product_list">
+                    <input id="upload_product_list" type="file" multiple>
+                </span>
+            </div>
         </div>
 
-        <div id="base2">
+        <div class="flex-box" id="box_product_list">
 
             <div class="b1">
                 <div class="b5">
@@ -383,15 +389,16 @@ const info2 = document.getElementById('info2');
 /*
 init() -> redraw()
 ev_resize() -> set_base_size() -> redraw()
-ev_change_rf_params() -> redraw()
+ev_rfp_change() -> redraw()
 */
 init();
 
 function set_base_size()
 {
     //let height = `${window.innerHeight*.98}px`;
-    document.getElementById('base1').style.setProperty('width',
-        `${window.innerWidth*.98}px`);
+    Array.from(document.getElementsByClassName('flex-box')).forEach(e => {
+        e.style.setProperty('width', `${window.innerWidth*.98}px`);
+    });
 
     // set canvas width
     if (window.innerWidth < 600) {
@@ -444,7 +451,7 @@ function ev_mw_to_dbm(e)
     document.getElementById('tx_power_dbm').value = get_mw_to_dbm(mw);
 }
 
-function ev_change_rf_params()
+function ev_rfp_change()
 {
     redraw();
 }
@@ -527,8 +534,11 @@ function init()
     redraw();
 
     window.addEventListener('resize', ev_resize);
-    document.getElementById("upload-file")
+    document.getElementById("upload_product_list")
         .addEventListener("change", load_files);
+    Array.from(document.getElementsByTagName('input')).forEach(e => {
+        e.addEventListener('input', ev_rfp_change);
+    });
 }
 
 function get_rf_params()
@@ -925,14 +935,21 @@ function set_rf_estimation()
 function redraw()
 {
     set_rf_estimation();
+    // display box_chart_params or not
     if (document.getElementById('enable_chart_rx_power').checked === true) {
-        document.getElementById('box_chart_distance').style.display = 'block';
-        document.getElementById('box_chart_rx_power').style.display = 'block';
+        document.getElementById('box_chart_params').style.display = 'block';
         draw_rx_power();
     } else {
-        document.getElementById('box_chart_distance').style.display = 'none';
-        document.getElementById('box_chart_rx_power').style.display = 'none';
+        document.getElementById('box_chart_params').style.display = 'none';
         Plotly.purge(canvas1);
+    }
+    // display box_upload_file or not
+    if (document.getElementById('enable_product_list').checked === true) {
+        document.getElementById('box_product_list').style.display = 'flex';
+        document.getElementById('upload_product_list').style.display = 'block';
+    } else {
+        document.getElementById('box_product_list').style.display = 'none';
+        document.getElementById('upload_product_list').style.display = 'none';
     }
 }
 
