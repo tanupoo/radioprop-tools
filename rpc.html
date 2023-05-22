@@ -1121,10 +1121,10 @@ function ev_load_product_list_files(ev)
                 input_data.forEach(x => {
                     let v = {
                         'prod': x.ProdName,
-                        'value': parseFloat(x.V),
+                        'value': parseFloat(x.Value),
                         'freq_low': parseFloat(x.FreqL),
                         'freq_high': parseFloat(x.FreqH),
-                        'region': x.R,
+                        'region': x.Region,
                         'id': seq++,
                     };
                     switch (x.ProdType) {
