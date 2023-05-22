@@ -457,12 +457,20 @@ function get_mw_to_dbm(mw)
     return round_base(dbm);
 }
 
+function ev_dbm_to_mw()
+{
+    /* need to separate from ev_rfp_change().
+       because it is called from init(), where ev is undefined.
+    */
+    let dbm = parseFloat(document.getElementById('tx_power_dbm').value);
+    document.getElementById('tx_power_mw').value = get_dbm_to_mw(dbm);
+}
+
 function ev_rfp_change(ev)
 {
     if (ev !== undefined) {
         if (ev.target.id == 'tx_power_dbm') {
-            let dbm = parseFloat(document.getElementById('tx_power_dbm').value);
-            document.getElementById('tx_power_mw').value = get_dbm_to_mw(dbm);
+            ev_dbm_to_mw();
         } else if (ev.target.id == 'tx_power_mw') {
             let mw = parseFloat(document.getElementById('tx_power_mw').value);
             document.getElementById('tx_power_dbm').value = get_mw_to_dbm(mw);
@@ -600,6 +608,7 @@ function init()
     Object.entries(default_rf_params).forEach(([k,v]) => {
         document.getElementById(k).value = v;
         });
+    ev_dbm_to_mw();
     ev_rfp_change();
     ev_enable_product_list();
 
