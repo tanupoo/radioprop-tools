@@ -1006,10 +1006,12 @@ function draw_rx_power()
     if (p.dist_target > x_min_distance) {
         // ignore it if the target distance is less than x_min_distance.
         let x_min_index = -1;
-        for (let j = 0; j < lines[0].x.length; j++) {
-            if (lines[0].x[j] > x_min_distance) {
-                x_min_index = j;
-                break;
+        if (lines.length > 0) {
+            for (let j = 0; j < lines[0].x.length; j++) {
+                if (lines[0].x[j] > x_min_distance) {
+                    x_min_index = j;
+                    break;
+                }
             }
         }
         //if (x_min_index != -1) {
