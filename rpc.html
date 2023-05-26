@@ -57,7 +57,7 @@ input[type=text] {
     flex-wrap: wrap;
 }
 .canvas {
-    height: 250px;
+    /*height: 250px;*/
 }
 /* text */
 .t2 {
@@ -350,7 +350,7 @@ input[type=text] {
 
 <script type="text/javascript" defer>
 
-const minimum_canvas_width = 600;
+const minimum_canvas1_width = 600;
 const x_min_distance = 9.9;   // 10m
 const significant_digit_base = 100; // 2
 
@@ -391,7 +391,8 @@ const path_loss_models = [
 
 ///// main
 
-var canvas_width = 0;
+var canvas1_width = 0;
+const canvas1_height = 600;
 var current_model = '';
 
 const canvas1 = document.getElementById('canvas-path-loss');
@@ -421,11 +422,11 @@ function set_base_size()
 
     // set canvas width
     if (window.innerWidth < 600) {
-        canvas1.style.setProperty('width', minimum_canvas_width);
-        canvas_width = minimum_canvas_width;
+        canvas1.style.setProperty('width', minimum_canvas1_width);
+        canvas1_width = minimum_canvas1_width;
     } else {
         canvas1.style.setProperty('width', window.innerWidth*.98);
-        canvas_width = window.innerWidth*.94;
+        canvas1_width = window.innerWidth*.94;
     }
 }
 
@@ -1148,9 +1149,10 @@ function draw_rx_power()
             autotick: y_autotick,
             dtick: y_dtick,
         },
-        width: canvas_width,
-        height: 600,
+        width: canvas1_width,
+        height: canvas1_height,
     };
+    canvas1.style.setProperty('height', canvas1_height);
 
     Plotly.newPlot(canvas1, lines, layout)
         .catch(function(err){console.log('err2:', err)});
