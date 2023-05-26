@@ -821,17 +821,23 @@ function pl_model_wi_los()
 function get_pl_wi_nlos(city_size, params, distance)
 {
     /*
+     * city_size: 'large', 'medium'
+     * distance (m)
+     */
+    /*
     Lb = L0 + Lrts + Lmsd (Lrts + Lmsg > 0)
        = L0               (Lrts + Lmsg <= 0)
     L0 = 32.4 + 20*log10(d) + 20*log10(f)
+    # Lrts
     Lrts = -16.9 - 10*log10(w) + 10*log10(f) + 20*log(dhm) + Lori
     Lori = -10 + 0.354*phi        ( 0 <= phi < 35)
          = 2.5 + 0.075*(phi - 35) (35 <= phi < 55)
          = 4.0 - 0.114*(phi - 55) (55 <= phi <= 90)
     dhm = hr - hm
     dhb = hb - hr
-    Lmsd = Lbah + ka + kd*log10(d) + kf*log10(f) - 9*log10(b)
-    Lbah = -18*log10(1 + dhb)     (hb > hr)
+    # Lmsd
+    Lmsd = Lbsh + ka + kd*log10(d) + kf*log10(f) - 9*log10(b)
+    Lbsh = -18*log10(1 + dhb)     (hb > hr)
          = 0                      (hb <= hr)
     ka = 54                       (hb > hr)
        = 54 - 0.8*dhb             (d >= 0.5, hb < hr)
@@ -841,8 +847,17 @@ function get_pl_wi_nlos(city_size, params, distance)
     kf = -4 + 0.7*(f/925 - 1)     (med. city with amount of trees)
        = -4 + 1.5*(f/925 - 1)     (large city)
 
+    f: frequency (MHz): [800, 2000]
+    hb: base antenna height (m): [4, 50]
+    hm: mobile station antenna height (m): [1, 3]
+    d: distance (km): [0.02, 5]
+    b: building sepration. (m)
+    w: width of street. (m)
+    hr: nominal height of building roofs. (m)
+    phi: angle of wave with the street.
     */
     let d = distance/1000;
+
     let f = params.freq;
     // make hb > hm
     let hb = params.tx_ant_height;
@@ -852,54 +867,70 @@ function get_pl_wi_nlos(city_size, params, distance)
         let hm = params.tx_ant_height;
     }
     let phi = 90;
+    if (params.phi !== undefined) {
+        phi = params.phi;
+    }
     let b = 20;
+    if (params.b !== undefined) {
+        b = params.b;
+    }
     let w = 10;
-    let hr = (hb + hm)/2;
-    let log10 = Math.log10
-
-    if (!(hb > hr && hr > hm)) {
-        console.log(`WARNING: must be hb > hr > hm, hb=${hb} hr=${hr} hm=${hm}`);
+    if (params.w !== undefined){
+        w = params.w;
     }
-
-    let dhb = hb - hr;
-    let dhm = hr - hm;
-
-    let B = 0.7
-    if (city_size === 'large') {
-        B = 1.5;
-    }
-
-    if (hb > hr) {
-        Lbah = -18*log10(1 + dhb);
+    let hr;
+    if (params.hr !== undefined){
+        hr = params.hr;
     } else {
-        Lbah = 0;
+        hr = (hb - hm < 2) ? (hb - hm) : (hb + hm)*4/5;
     }
-    if (hb > hr) {
+    let log10 = Math.log10
+    // Lmsd
+    let dhb = hb - hr;
+    let Lbsh = 0;
+    if (dhb > 0) {
+        Lbsh = -18*log10(1 + dhb);
+    }
+    let ka = 0;
+    if (dhb > 0) {
         ka = 54;
-    } else if (d >= 0.5 && hb < hr) {
+    } else if (dhb <= 0 && d >= 0.5) {
         ka = 54 - 0.8*dhb;
-    } else if (d < 0.5 && hb <= hr) {
+    } else if (dhb <= 0 && d < 0.5) {
         ka = 54 - 0.8*dhb*(2*d);
     } else {
-        console.log(`FATAL`);
+        console.log(`FATAL: ka: hb=${hb} hr=${hr} d=${d}`);
     }
+    let kd = 0;
     if (hb > hr) {
         kd = 18;
     } else {
-        kd = 18 - 15*(dhb/hr);
+        // XXX 18 - 15*(dhb/hb)
+        kd = 18 + 15*(dhb/hr);
     }
-    let Lmsd = 54 - 18*log10(1+dhb) + 18*log10(d) - 9*log10(b);
-    Lmsd += (-4 + B*(f/925-1))*log10(f);
-    // Lori
+    let kf = 0;
+    if (city_size === 'medium') {
+        kf = -4 + 0.7*(f/925 - 1);
+    } else if (city_size === 'large') {
+        kf = -4 + 1.5*(f/925 - 1);
+    } else {
+        console.log(`FATAL: kf: city_size=${city_size}`);
+    }
+    let Lmsd = Lbsh + ka + kd*log10(d) + kf*log10(f) - 9*log10(b);
+    // Lrts
+    let dhm = hr - hm;
     let Lori = 0;
     if (phi >= 0 && phi < 35) {
         Lori = - 10 + 0.354*phi;
     } else if (phi >= 35 && phi < 55) {
         Lori = 2.5 + 0.075*(phi - 35);
     } else if (phi >= 55 && phi <= 90) {
-        Lori = 4 - 0.114*phi - 55;
+        Lori = 4.0 - 0.114*(phi - 55);
+    } else {
+        console.log(`FATAL: Lori: phi=${phi}`);
     }
     let Lrts = -16.9 - 10*log10(w) + 10*log10(f) + 20*log10(dhm) + Lori;
+    // L0
     let L0 = 32.4 + 20*log10(d) + 20*log10(f);
     // Lb
     let Lb = L0;
@@ -918,6 +949,10 @@ function pl_model_wi_nlos_large()
     this.label = 'wi_nlos_large';
 
     this.get_path_loss = function(p, d) {
+        p.b = 50;
+        p.w = 20;
+        p.hr = 20;
+        p.phi = 70;
         return get_pl_wi_nlos('large', p, d);
     };
 }
@@ -931,6 +966,10 @@ function pl_model_wi_nlos_medium()
     this.label = 'wi_nlos_medium';
 
     this.get_path_loss = function(p, d) {
+        p.b = 20;
+        p.w = 10;
+        p.hr = 40;
+        p.phi = 90;
         return get_pl_wi_nlos('medium', p, d);
     };
 }
