@@ -57,3 +57,4 @@ The frequency boundary for a large city is 200 in [1],[3], but 400 in [2].
 The last value of the formula is 40.94 in [1],[2], but 40.98 in [3].
 The valid communication range is [1km, 20km] in [2],[3], but [1km, 10km] in [1].
 
+- [Walfisch-Ikegami Model](https://www.ieice.org/cs/ap/misc/denpan-db/prop_model_db/model_list/walfisch-ikegami/)
