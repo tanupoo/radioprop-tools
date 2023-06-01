@@ -378,23 +378,50 @@ const default_rf_params = {
     'rx_power_step': 20,
     };
 
+const path_loss_models = [
+    {
+        'model': new pl_model_freespace(),
+        'default': true,
+    },
+    {
+        'model': new pl_model_hata_open(),
+        'default': false,
+    },
+    {
+        'model': new pl_model_hata_suburb(),
+        'default': false,
+    },
+    {
+        'model': new pl_model_hata_urban(),
+        'default': false,
+    },
+    {
+        'model': new pl_model_hata_urban_large(),
+        'default': false,
+    },
+    {
+        'model': new pl_model_wi_los(),
+        'default': true,
+    },
+    {
+        'model': new pl_model_wi_nlos_medium(),
+        'default': true,
+    },
+    {
+        'model': new pl_model_wi_nlos_large(),
+        'default': true,
+    },
+    {
+        'model': new pl_model_fixed(),
+        'default': false,
+    },
+    ];
+
 ///// main
 
 var canvas1_width = 0;
 const canvas1_height = 600;
 var current_model = '';
-
-const path_loss_models = [
-    new pl_model_freespace(),
-    new pl_model_hata_open(),
-    new pl_model_hata_suburb(),
-    new pl_model_hata_urban(),
-    new pl_model_hata_urban_large(),
-    new pl_model_wi_los(),
-    new pl_model_wi_nlos_medium(),
-    new pl_model_wi_nlos_large(),
-    new pl_model_fixed(),
-    ];
 
 const canvas1 = document.getElementById('canvas-path-loss');
 const info1 = document.getElementById('info1');
@@ -572,28 +599,29 @@ function init_path_loss_models()
 
     let tbody = table.createTBody();
     path_loss_models.forEach(x => {
+        let model = x.model;
         row = tbody.insertRow(-1);
         // td 0: model name
-        n = document.createTextNode(x.model_name);
+        n = document.createTextNode(model.model_name);
         row.insertCell(-1).appendChild(n);
         // td 1: for estimation.
         n = document.createElement('input');
-        n.id = `pl_use_${x.label}`;
+        n.id = `pl_use_${model.label}`;
         n.type = 'radio';
         n.name = 'pl_model_use';
         n.classList.add('rfp');
-        n.x__model = x;
-        n.checked = x.label == 'fixed' ? true : false;
+        n.x__model = model;
+        n.checked = model.label == 'fixed' ? true : false;
         c = row.insertCell(-1);
         c.classList.add('path_loss_use');
         c.classList.add('t-center');
         c.appendChild(n);
         // td 2: for chart.
         n = document.createElement('input');
-        n.id = `pl_chart_${x.label}`;
+        n.id = `pl_chart_${model.label}`;
         n.type = 'checkbox';
         n.classList.add('rcp');
-        n.checked = x.label == 'fixed' ? false : true;
+        n.checked = x.default;
         c = row.insertCell(-1);
         c.classList.add('t-center');
         c.appendChild(n);
@@ -1036,9 +1064,10 @@ function draw_rx_power()
     let lines = [];
 
     path_loss_models.forEach(x => {
-        let e = document.getElementById(`pl_chart_${x.label}`);
+        let model = x.model;
+        let e = document.getElementById(`pl_chart_${model.label}`);
         if (e.checked === true) {
-            lines.push(get_rx_power_curve(x, p));
+            lines.push(get_rx_power_curve(model, p));
         }
     });
 
