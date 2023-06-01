@@ -87,6 +87,11 @@ input[type=text] {
 .path_loss_use {
     background-color: #e7f4e4;
 }
+.scrollbox {
+    overflow: scroll;
+    height: 60px;
+    border: 1px solid;
+}
 
 #title {
     font-size: large;
@@ -332,11 +337,7 @@ input[type=text] {
         <hr>
         <div class="canvas" id="canvas-path-loss"></div>
 
-        <!--
-        <hr>
-        <div id="info1"></div>
-        <div id="info2"></div>
-        -->
+        <div id="msg_box" class="scrollbox"></div>
 
         <hr>
         <div id="credit">Feedback: <a href="https://bit.ly/43wot4l"
@@ -424,8 +425,7 @@ const canvas1_height = 600;
 var current_model = '';
 
 const canvas1 = document.getElementById('canvas-path-loss');
-const info1 = document.getElementById('info1');
-const info2 = document.getElementById('info2');
+const msgbox = new scroll_list('msg_box', 20);
 
 /*
  *  ev_resize() -> set_base_size() -> draw_rx_power()
@@ -463,14 +463,45 @@ function round_base(v)
     return Math.round(v*significant_digit_base)/significant_digit_base;
 }
 
-function put_info1(m)
+function scroll_list(element_id, max_lines)
 {
-    //XXX info1.innerText = m;
+    if (max_lines === undefined) {
+        max_lines = 100;
+    }
+
+    const msg_box = document.getElementById(element_id)
+    const ul = document.createElement('ul');
+    // ulを初期化する。
+    // - margin, paddingを設定する。
+    // - ブレットを削除する。
+    //     + jsのnoneではなく文字列の'none'に注意。
+    ul.style.setProperty('list-style-type', 'none');
+    ul.style.setProperty('padding', '4px');
+    ul.style.setProperty('margin', '0px');
+    msg_box.appendChild(ul);
+
+    let lines = 0;
+    this.append = function (text) {
+        if (lines > max_lines) {
+            ul.removeChild(ul.firstChild);
+        } else {
+            lines++;
+        }
+        let li = document.createElement("li");
+        li.innerText = text;
+        ul.appendChild(li);
+    }
 }
 
-function put_info2(m)
+function put_info1(m)
 {
-    //XXX info2.innerText = m;
+    // INFO
+    msgbox.append(`INFO: ${m}`);
+}
+
+function put_error(m)
+{
+    msgbox.append(`NOTICE: ${m}`);
 }
 
 function get_dbm_to_mw(dbm)
@@ -742,16 +773,16 @@ function get_pl_hata(env_type, params, distance)
     let log10 = Math.log10
 
     const info_suffix = ' for HATA model.';
-    put_info2('The valid distance of HATA model is longer than 1000(m).');
+    put_error('The valid distance of HATA model is longer than 1000(m).');
 
     if (f < 150 || f > 1500) {
-        put_info1('invalid frequency' + info_suffix);
+        put_error('invalid frequency' + info_suffix);
     }
     if (hB < 30 || hB > 200) {
-        put_info1('invalid height of Tx antenna' + info_suffix);
+        put_error('invalid height of Tx antenna' + info_suffix);
     }
     if (hM < 1 || hM > 10) {
-        put_info1('invalid height of Rx antenna' + info_suffix);
+        put_error('invalid height of Rx antenna' + info_suffix);
     }
 
     let log10f = log10(f);
@@ -1323,7 +1354,7 @@ function ev_load_product_list_files(ev)
             v = lines.shift().split(',');
 //console.log('version:', v);
             if (v[0] == 'FormatVersion' && v[1] == '0.1a') {
-                put_info2(`WARNING: invalid file format. ${v[0]}`);
+                put_error(`invalid file format. ${v[0]}`);
             }
             // parse the file as CSV.
             const plot_data = csv()
@@ -1353,7 +1384,7 @@ function ev_load_product_list_files(ev)
                         pdb.other.push(v);
                         break;
                     default:
-                        put_info2(`ERROR: invalid data. ${x}`);
+                        put_error(`invalid data. ${x}`);
                     }
                 });
                 nb_files -= 1;
