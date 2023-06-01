@@ -378,6 +378,12 @@ const default_rf_params = {
     'rx_power_step': 20,
     };
 
+///// main
+
+var canvas1_width = 0;
+const canvas1_height = 600;
+var current_model = '';
+
 const path_loss_models = [
     new pl_model_freespace(),
     new pl_model_hata_open(),
@@ -389,12 +395,6 @@ const path_loss_models = [
     new pl_model_wi_nlos_large(),
     new pl_model_fixed(),
     ];
-
-///// main
-
-var canvas1_width = 0;
-const canvas1_height = 600;
-var current_model = '';
 
 const canvas1 = document.getElementById('canvas-path-loss');
 const info1 = document.getElementById('info1');
